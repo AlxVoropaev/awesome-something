@@ -6,20 +6,41 @@
 <title>Robot Intelligence Briefs</title>
 <meta name="description" content="Robot Intelligence Briefs: обзоры исследований по humanoid robotics, VLA/WAM, agentic robotics и embodied AI.">
 <style>
-:root{--bg:#f6f8fb;--card:#fff;--text:#172033;--muted:#64748b;--line:#e5eaf2;--blue:#1d4ed8;--shadow:0 12px 28px rgba(15,23,42,.07)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}
-a{color:inherit;text-decoration:none}.wrap{max-width:980px;margin:auto;padding:22px}
+:root{
+  --bg:#f6f8fb;--card:#fff;--text:#172033;--muted:#64748b;--line:#e5eaf2;
+  --blue:#1d4ed8;--blue-soft:#eff6ff;--shadow:0 12px 28px rgba(15,23,42,.07)
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:980px;margin:auto;padding:22px}
 header{margin:20px 0;padding:36px;border-radius:20px;background:linear-gradient(135deg,#0f172a,#1e3a8a 72%,#312e81);color:#fff;box-shadow:var(--shadow)}
-h1{margin:0 0 8px;font-size:clamp(32px,6vw,54px);line-height:1.05}.sub{color:#dbeafe;max-width:760px}.meta{margin-top:16px;font-size:13px;color:#bfdbfe}
-section{margin:18px 0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow);transition:.15s transform,.15s box-shadow}
-.card:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(15,23,42,.10)}
+h1{margin:0 0 8px;font-size:clamp(32px,6vw,54px);line-height:1.05}
+.sub{color:#dbeafe;max-width:760px}
+.meta{margin-top:16px;font-size:13px;color:#bfdbfe}
+.report-list{display:flex;flex-direction:column;gap:16px;margin:18px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
+.card-top{display:flex;gap:18px;align-items:flex-start;justify-content:space-between}
+.card-main{min-width:0}
 .date{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--blue)}
-.card h2{margin:7px 0 9px;font-size:22px}.desc{color:var(--muted);font-size:14px}
-.badge{display:inline-block;margin-top:14px;padding:5px 9px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:800}
+.card h2{margin:7px 0 9px;font-size:24px;line-height:1.2}
+.desc{color:var(--muted);font-size:14px;max-width:760px}
+.open-link{flex:0 0 auto;display:inline-block;padding:9px 13px;border-radius:10px;background:var(--blue);color:#fff;font-size:13px;font-weight:800}
+.open-link:hover{filter:brightness(.96)}
+details{margin-top:17px;border-top:1px solid var(--line);padding-top:14px}
+summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;color:var(--blue);user-select:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";display:inline-grid;place-items:center;width:22px;height:22px;border-radius:7px;background:var(--blue-soft);font-size:16px;line-height:1}
+details[open] summary::before{content:"−"}
+.tldr-content{margin:13px 0 2px;padding:15px 17px;border-radius:12px;background:#f8fafc;border:1px solid var(--line);font-size:14px}
+.tldr-content p:first-child{margin-top:0}.tldr-content p:last-child{margin-bottom:0}
+.badge{display:inline-block;margin-top:12px;padding:5px 9px;border-radius:999px;background:var(--blue-soft);color:var(--blue);font-size:12px;font-weight:800}
 .note{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;color:var(--muted)}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:28px 0 40px}
-@media(max-width:720px){.wrap{padding:12px}.grid{grid-template-columns:1fr}header{padding:26px 20px;border-radius:14px}}
+@media(max-width:720px){
+  .wrap{padding:12px}header{padding:26px 20px;border-radius:14px}
+  .card{padding:18px}.card-top{display:block}.open-link{margin-top:15px}.card h2{font-size:21px}
+}
 </style>
 </head>
 <body>
@@ -30,27 +51,52 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:28px 0 40px}
   <div class="meta">Обновление: вторник и пятница · окно каждого обзора: последние 5 дней</div>
 </header>
 
-<section>
-<div class="grid">
-  <a class="card" href="Robot%20Intellegence/robot_intelligence_brief_2026-09-25.html">
-    <div class="date">25 сентября 2026</div>
-    <h2>Robot Intelligence Brief — 21–25 сентября</h2>
-    <div class="desc">FLUX 3 Action, EmbodiedSWE, InternW0, NowWAM, LiMA, PredActor, HF radar и сдвиг к multi-rate robot intelligence.</div>
-    <span class="badge">Последний выпуск</span>
-  </a>
+<main>
+<section class="report-list">
 
-  <a class="card" href="Robot%20Intellegence/robot_intelligence_brief_2026-09-22.html">
-    <div class="date">22 сентября 2026</div>
-    <h2>Robot Intelligence Brief — 18–22 сентября</h2>
-    <div class="desc">Light-O1, World Model distillation, Opt2VLA, AR-WAM, SeeQ, Skel-WAM и Hugging Face radar.</div>
-    <span class="badge">Открыть отчёт</span>
-  </a>
-</div>
+  <article class="card">
+    <div class="card-top">
+      <div class="card-main">
+        <div class="date">25 сентября 2026</div>
+        <h2>Robot Intelligence Brief — 21–25 сентября</h2>
+        <div class="desc">FLUX 3 Action, EmbodiedSWE, InternW0, NowWAM, LiMA, PredActor, HF radar и сдвиг к multi-rate robot intelligence.</div>
+        <span class="badge">Последний выпуск</span>
+      </div>
+      <a class="open-link" href="Robot%20Intellegence/robot_intelligence_brief_2026-09-25.html">Открыть отчёт</a>
+    </div>
+    <details>
+      <summary>TL;DR</summary>
+      <div class="tldr-content">
+        <p><strong>Главное событие окна — FLUX 3 Action.</strong> Black Forest Labs выпустила open-weight 7B World Action Model, которая совместно денойзит future video/action tokens, заняла первое место на RoboLab-120 с 42.92% success и сразу получила готовые LeRobot-чекпоинты для DROID и SO-101. Это один из первых свежих WAM-релизов, который выглядит не только как research demo, но и как практически пригодная база для fine-tuning.</p>
+        <p>Самый интересный <strong>agentic robotics</strong> результат — <strong>EmbodiedSWE</strong>: coding agents пишут и отлаживают task-specific robot programs в simulation, после чего verified solution автоматически превращается в сотни разнообразных demonstrations для VLA. Coding agent здесь выступает не runtime-controller, а <strong>автоматическим robotics engineer / data generator</strong>.</p>
+        <p>Параллельно сразу несколько работ подтверждают архитектуру <strong>slow predictive intelligence + fast reactive execution</strong>: InternW0 кэширует video-world context и чаще обновляет action; LiMA разделяет Future Dreamer и Motion Refiner; PredActor объединяет future-state prediction с direct humanoid action control на 50 Hz. А NowWAM показывает важную границу: <strong>future-image prediction не всегда нужна вообще</strong> — иногда достаточно generative denoising prior текущего observation.</p>
+      </div>
+    </details>
+  </article>
+
+  <article class="card">
+    <div class="card-top">
+      <div class="card-main">
+        <div class="date">22 сентября 2026</div>
+        <h2>Robot Intelligence Brief — 18–22 сентября</h2>
+        <div class="desc">Light-O1, World Model distillation, Opt2VLA, AR-WAM, SeeQ, Skel-WAM и Hugging Face radar.</div>
+      </div>
+      <a class="open-link" href="Robot%20Intellegence/robot_intelligence_brief_2026-09-22.html">Открыть отчёт</a>
+    </div>
+    <details>
+      <summary>TL;DR</summary>
+      <div class="tldr-content">
+        <p>За эти 5 дней выделяются четыре сдвига. Во-первых, <strong>Light-O1</strong> показывает масштабируемый pretraining whole-body intelligence на восстановленных из интернет-видео человеческих действиях. Во-вторых, спор <strong>VLA vs World Model</strong> становится ещё менее бинарным: свежая работа <em>Think Like a World Model, Act Like a VLA</em> дистиллирует physical prior world model прямо в representation VLA и удаляет world model из runtime. В-третьих, интерфейс между foundation layer и физическим роботом становится богаче: <strong>Opt2VLA</strong> передаёт вниз уже не только motion target, но и force reference. Наконец, <strong>AR-WAM</strong> специально проектирует robot policy как physical skill backend для внешнего GPT/Claude/Gemini-подобного агента.</p>
+      </div>
+    </details>
+  </article>
+
 </section>
 
 <section class="note">
-  Новые HTML-выпуски можно добавлять в <strong>Robot Intellegence/</strong>; главная страница служит публичным индексом архива.
+  Новые HTML-выпуски добавляются в <strong>Robot Intellegence/</strong>; главная страница служит публичным индексом архива.
 </section>
+</main>
 
 <footer>Robot Intelligence Briefs · AlxVoropaev/awesome-something</footer>
 </div>
