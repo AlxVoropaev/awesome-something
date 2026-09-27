@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Robot Intelligence Brief — 21–25 сентября 2026</title>
+<style>
+:root{
+  --bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#64748b;--line:#e5eaf2;
+  --blue:#1d4ed8;--blue2:#eff6ff;--green:#0f766e;--greenbg:#ecfdf5;
+  --orange:#9a3412;--orangebg:#fff7ed;--gray:#475569;--graybg:#f1f5f9;
+  --purple:#6d28d9;--purplebg:#f5f3ff;--shadow:0 10px 28px rgba(15,23,42,.06);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.58}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+.container{max-width:1120px;margin:0 auto;padding:22px}
+header{margin:18px 0 20px;padding:34px;border-radius:20px;background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 72%,#312e81 100%);color:white;box-shadow:var(--shadow)}
+header h1{font-size:clamp(30px,5vw,48px);line-height:1.08;margin:0 0 8px}
+header .sub{color:#dbeafe;font-size:16px}.meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.pill{display:inline-block;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.12);font-size:12px;font-weight:650}
+section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:23px;margin:16px 0;box-shadow:var(--shadow)}
+.tldr{border-left:5px solid var(--blue)}
+h2{font-size:26px;margin:0 0 14px;line-height:1.2}h3{font-size:20px;margin:22px 0 9px}p{margin:9px 0}
+.small{font-size:13px;color:var(--muted)}
+.badge{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.025em;white-space:nowrap}
+.must{color:var(--green);background:var(--greenbg)}.read{color:var(--orange);background:var(--orangebg)}.skip{color:var(--gray);background:var(--graybg)}.new{color:var(--purple);background:var(--purplebg)}
+table{width:100%;border-collapse:collapse;min-width:780px}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+th,td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);background:#f8fafc}tr:last-child td{border-bottom:0}
+.code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid var(--line);border-radius:11px;padding:14px;white-space:pre-wrap;overflow:auto}
+.callout{background:var(--blue2);border:1px solid #cfe0ff;border-radius:12px;padding:15px 17px}
+.verdict{margin-top:13px;padding-top:12px;border-top:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.kpi{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fbfdff}.kpi strong{font-size:20px}
+ul,ol{padding-left:22px}
+footer{color:var(--muted);font-size:12px;text-align:center;padding:24px 6px 34px}
+@media(max-width:760px){.container{padding:12px}.grid{grid-template-columns:1fr}header{padding:24px 20px;border-radius:14px}section{padding:18px;border-radius:14px}h2{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>Robot Intelligence Brief</h1>
+  <div class="sub">Срез за 21–25 сентября 2026 · humanoids · VLA/WAM · coding agents · memory · dexterity · HF radar</div>
+  <div class="meta">
+    <span class="pill">Окно: последние 5 календарных дней</span>
+    <span class="pill">Повторы допустимы</span>
+    <span class="pill">Приоритет: новые релизы и evals</span>
+  </div>
+</header>
+
+<main>
+<section class="tldr">
+<h2>TL;DR</h2>
+<p><strong>Главное событие окна — FLUX 3 Action.</strong> Black Forest Labs выпустила open-weight 7B World Action Model, которая совместно денойзит future video/action tokens, заняла первое место на RoboLab-120 с 42.92% success и сразу получила готовые LeRobot-чекпоинты для DROID и SO-101. Это один из первых свежих WAM-релизов, который выглядит не только как research demo, но и как практически пригодная база для fine-tuning.</p>
+<p>Самый интересный <strong>agentic robotics</strong> результат — <strong>EmbodiedSWE</strong>: coding agents пишут и отлаживают task-specific robot programs в simulation, после чего verified solution автоматически превращается в сотни разнообразных demonstrations для VLA. Coding agent здесь выступает не runtime-controller, а <strong>автоматическим robotics engineer / data generator</strong>.</p>
+<p>Параллельно сразу несколько работ подтверждают архитектуру <strong>slow predictive intelligence + fast reactive execution</strong>: InternW0 кэширует video-world context и чаще обновляет action; LiMA разделяет Future Dreamer и Motion Refiner; PredActor объединяет future-state prediction с direct humanoid action control на 50 Hz. А NowWAM показывает важную границу: <strong>future-image prediction не всегда нужна вообще</strong> — иногда достаточно generative denoising prior текущего observation.</p>
+</section>
+
+<section>
+<h2>Рейтинг периода</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Работа / релиз</th><th>Что нового</th><th>Архитектурный сигнал</th><th>Вердикт</th></tr></thead>
+<tbody>
+<tr><td><strong>FLUX 3 Action</strong></td><td>7B open-weight WAM, #1 RoboLab-120, LeRobot + DROID/SO-101</td><td>WAM становится practical foundation policy</td><td><span class="badge must">MUST READ 5/5</span></td></tr>
+<tr><td><strong>EmbodiedSWE</strong></td><td>Coding agent → verified robot program → scalable VLA demonstrations</td><td>Agentic policy synthesis как data engine</td><td><span class="badge must">MUST READ 5/5</span></td></tr>
+<tr><td><strong>InternW0</strong></td><td>Slow video expert + fast action expert + cached K/V</td><td>World model вне fast control critical path</td><td><span class="badge must">MUST READ 5/5</span></td></tr>
+<tr><td><strong>NowWAM</strong></td><td>Generative prior без future target</td><td>Benefit может идти от denoising representation, а не foresight</td><td><span class="badge must">MUST READ 5/5</span></td></tr>
+<tr><td><strong>LiMA</strong></td><td>Future Dreamer + fast Motion Refiner для dexterity</td><td>Multi-rate VLA/WAM hierarchy</td><td><span class="badge must">MUST READ 4.5/5</span></td></tr>
+<tr><td><strong>BEE</strong></td><td>Human corrections задают adaptive RL constraints</td><td>Interventions как uncertainty-aware constraint</td><td><span class="badge read">READ 4.5/5</span></td></tr>
+<tr><td><strong>MemBodied</strong></td><td>Fixed-size episodic memory для VLA</td><td>Memory отделяется от raw context history</td><td><span class="badge read">READ 4.5/5</span></td></tr>
+<tr><td><strong>PredActor</strong></td><td>Joint future-state + action diffusion на G1, onboard 50 Hz</td><td>Prediction внутри direct controller</td><td><span class="badge read">READ 4.5/5</span></td></tr>
+<tr><td><strong>Think Like a WM, Act Like a VLA</strong></td><td>World-model features distill в compact VLA</td><td>Physics prior можно оставить только в training</td><td><span class="badge read">READ 4/5</span></td></tr>
+<tr><td><strong>Opt2VLA</strong></td><td>VLA выдаёт motion + contact force</td><td>Physical intent расширяется до force/wrench</td><td><span class="badge read">READ 4/5</span></td></tr>
+</tbody>
+</table></div>
+</section>
+
+<section>
+<h2>1. FLUX 3 Action — главный релиз окна</h2>
+<p><span class="badge new">NEW RELEASE · 23 SEP</span></p>
+<p>Black Forest Labs выпустила <strong>FLUX 3 Action</strong> — open-weight <strong>7B World Action Model</strong>. Модель получает camera frames, robot state и text instruction, после чего совместно денойзит <strong>future video tokens и action tokens</strong> в одной diffusion sequence.</p>
+<div class="code">camera frames + robot state + instruction
+          ↓
+frozen video VAE + frozen Qwen3-VL-4B text encoder
+          ↓
+7B diffusion transformer
+     ↙                 ↘
+future video tokens    action tokens
+          ↓
+32-step action chunk (+ optional decoded future frames)</div>
+<p>Для DROID-checkpoint Black Forest Labs сообщает <strong>42.92% success на RoboLab-120</strong>. Публичный NVIDIA leaderboard ставит FLUX 3 Action на первое место: Cosmos3-Nano-Policy — 36.8%, π0.5 — 28.0%, DreamZero — 25.7%, GR00T N1.6 — 7.2%.</p>
+<p>Практическая часть сильнее обычного research release: опубликованы <strong>DROID</strong> и <strong>SO-101</strong> policies, LeRobot integration, LoRA recipe, step-distilled 1-step variant и FP8 variants. SO-101 policy использует две камеры, 8-observation history, предсказывает 42 actions, исполняет 32 при 30 Hz и затем replans. DROID version выдаёт 32 actions при 15 Hz.</p>
+<p><strong>Ограничение:</strong> model card прямо предупреждает, что модель выдаёт joint targets и сама не ограничивает velocity, force или workspace; safety layer остаётся обязанностью deployment stack.</p>
+<div class="verdict"><span class="badge must">MUST READ / MUST TRY</span></div>
+<p class="small">
+<a href="https://huggingface.co/blog/black-forest-labs/flux-3-action">HF/BFL article</a> ·
+<a href="https://huggingface.co/black-forest-labs/flux-3-action-base">Base weights</a> ·
+<a href="https://huggingface.co/black-forest-labs/flux-3-action-droid">DROID checkpoint</a> ·
+<a href="https://huggingface.co/black-forest-labs/flux-3-action-so101">SO-101 checkpoint</a> ·
+<a href="https://research.nvidia.com/labs/srl/projects/robolab/leaderboard.html">RoboLab leaderboard</a>
+</p>
+</section>
+
+<section>
+<h2>2. EmbodiedSWE — coding agent превращается в robotics data factory</h2>
+<p><span class="badge new">NEW PAPER · 23 SEP</span></p>
+<p><strong>EmbodiedSWE</strong> — самый важный свежий результат по coding agents в robotics. Frontier coding agent получает simulator, state inspection и control primitives, пишет Python <code>solve(env)</code>, запускает его, анализирует failure, переписывает и повторяет до verified solution.</p>
+<p>После решения task компонент <strong>EmbodiedSWE-GEN</strong> превращает одну проверенную программу в большой training set для VLA, варьируя scene, strategy, valid phase starts, dynamics/noise и visuals. Trajectories сохраняются только после task grader и open-loop replay check.</p>
+<div class="code">coding agent
+→ write / run / debug solution in simulator
+→ verified task program
+→ scene / strategy / phase / dynamics / visual diversification
+→ hundreds of successful trajectories
+→ fine-tune VLA
+→ deploy learned policy</div>
+<p>На 6 задачах SmolVLA улучшается с 18% success при 10 demonstrations до 69% при 400. В held-out variations agent-aided data даёт mean rubric score <strong>0.233</strong> против <strong>0.066</strong> у script-only diversification.</p>
+<p>Есть и sim→real test: Opus 5-written lamp-disassembly solution породила 500 sim trajectories, которыми fine-tuned π0.5-DROID без real demonstrations. На Franka policy достигла полного unscrew/extract bulb в 20% из 10 trials; pretrained baseline был 0% на всех milestones.</p>
+<p>Сильный conceptual result: <strong>coding agent не обязан сидеть в runtime; он может быть автоматизированным инженером, создающим supervision для дешёвой runtime-policy.</strong></p>
+<div class="verdict"><span class="badge must">MUST READ 5/5</span></div>
+<p class="small"><a href="https://arxiv.org/abs/2609.27308">EmbodiedSWE — arXiv</a></p>
+</section>
+
+<section>
+<h2>3. InternW0 — predict slowly, act quickly</h2>
+<p><span class="badge new">NEW PAPER · 23 SEP</span></p>
+<p><strong>InternW0</strong> — physical world model, который явно разделяет частоты вычисления. High-capacity video expert строит более дальний predictive context, а lightweight action expert обновляет control чаще. Вместо полного rerun video model на каждом action tick система кэширует layerwise K/V и адаптирует context под fresh observation.</p>
+<div class="code">slow loop:
+observation → video/world expert → predictive context + cached K/V
+
+fast loop:
+fresh observation + cached predictive context
+→ lightweight action expert
+→ action update</div>
+<p>Training mixture — около <strong>7,200 часов</strong> heterogeneous robot + egocentric data, плюс contact-aware post-training с force/tactile channels.</p>
+<p>На quantitative pipetting с 20-DoF dexterous hand + 7-DoF arm reported progress: <strong>65.3%</strong> против 46.7% у π0.5 и 18.7% у Fast-WAM. Авторы отдельно исключают video generation из action critical-path measurement.</p>
+<p>Принцип очень важен для humanoids: <strong>world prediction не обязана обновляться на той же частоте, что и motor decision.</strong></p>
+<div class="verdict"><span class="badge must">MUST READ 5/5</span></div>
+<p class="small"><a href="https://arxiv.org/abs/2609.27656">InternW0 — arXiv</a></p>
+</section>
+
+<section>
+<h2>4. NowWAM — а future prediction вообще нужна?</h2>
+<p><span class="badge new">NEW PAPER · 23 SEP</span></p>
+<p><strong>Beyond Future Prediction: Denoising as Generative Adaptation for Robot Control</strong> задаёт неудобный для WAM field вопрос: может быть, преимущество generative backbone связано не с foresight, а с тем, что diffusion denoising формирует сильное visual representation?</p>
+<p>В <strong>NowWAM</strong> отдельного future target нет. На training текущий observation зашумляется на случайном diffusion timestep; один noisy stream используется одновременно для visual denoising loss и action prediction. На inference — clean current observation, без visual rollout.</p>
+<p>Ключевой ablation: future target t+32 даёт 83.70%, а <strong>past target t−16 — 83.80%</strong> на контролируемом subset. Headline на LIBERO-Plus: <strong>87.7%</strong> с FLUX2-Klein против 81.6% у future-target ImageWAM; с Z-Image backbone — 87.8%. Training uses 392 visual tokens вместо 784, step time 2.85 → 1.63 s.</p>
+<p class="callout"><strong>Вывод:</strong> «WAM лучше VLA, потому что представляет будущее» становится слишком простой историей. Generative prior может быть полезен как robust representation learner даже без foresight.</p>
+<div class="verdict"><span class="badge must">MUST READ 5/5</span></div>
+<p class="small"><a href="https://arxiv.org/abs/2609.28339">NowWAM — arXiv</a></p>
+</section>
+
+<section>
+<h2>5. LiMA — long-term imagination + fast dexterous reaction</h2>
+<p><span class="badge new">NEW PAPER · 23 SEP</span></p>
+<p><strong>LiMA</strong> переносит multi-rate idea в bimanual dexterity. Slow <strong>Future Dreamer</strong>, инициализированный от Cosmos-Predict2-2B, генерирует future visual latents и coarse macro-action intent; быстрый <strong>Motion Refiner</strong> использует последние observations и уточняет dense actions. Между ними — Latent Schrödinger Bridge Coupling.</p>
+<p>На 6 real-world bimanual tasks reported full-task success — <strong>70.8%</strong>, average subtask success — 78.9%. Amortized latency на 32-step chunk — <strong>325 ms</strong> против 600 ms у Cosmos-Policy в авторском H100 comparison; Dreamer обновляется раз в четыре Refiner updates.</p>
+<p>Архитектурно это тот же общий принцип, что InternW0: <strong>slow intent/imagination не должно блокировать fast physical correction.</strong></p>
+<div class="verdict"><span class="badge must">MUST READ 4.5/5</span></div>
+<p class="small"><a href="https://arxiv.org/abs/2609.28431">LiMA — arXiv</a></p>
+</section>
+
+<section>
+<h2>6. BEE — human corrections как constraint, а не label</h2>
+<p><span class="badge new">NEW PAPER · 23 SEP</span></p>
+<p>В <strong>BEE</strong> Correction Model оценивает, как человек исправил бы VLA proposal и насколько correction стабилен по каждой action dimension. Если correction стабилен — RL policy жёстко держится рядом с human constraint; если сильно варьируется — constraint ослабляется и policy может улучшать expert behavior.</p>
+<p>На 3 real tasks + LIBERO-Pro authors report <strong>91.2% average success</strong> против 57.5% у RLT и 42.1% у DSRL, одновременно с минимальным intervention rate на real tasks.</p>
+<p>Практически важная интерпретация: human intervention — не обязательно «правильный action», а <strong>evidence о допустимой области policy</strong>.</p>
+<div class="verdict"><span class="badge read">READ 4.5/5</span></div>
+<p class="small"><a href="https://arxiv.org/abs/2609.27450">BEE — arXiv</a></p>
+</section>
+
+<section>
+<h2>7. MemBodied — память VLA без раздувания context</h2>
+<p><span class="badge new">NEW PAPER · 23 SEP</span></p>
+<p><strong>MemBodied</strong> добавляет fixed-size episodic memory к VLA. Вместо concatenation всех прошлых images policy получает два compact components: <strong>associative state</strong>, обновляемый между calls, и <strong>episode anchor</strong>, сохраняющий компактное представление начальной сцены.</p>
+<p>На пяти RMBench memory tasks MemBodied показывает <strong>7.81× mean success</strong> относительно stateless policy, 2.98× относительно vanilla recurrent memory и 1.3× относительно strongest memory-augmented baseline при 10× меньшем числе добавленных parameters. На LIBERO-Long — 90.6%, +5.4 pp к stateless π0.</p>
+<div class="verdict"><span class="badge read">READ 4.5/5</span></div>
+<p class="small"><a href="https://arxiv.org/abs/2609.28256">MemBodied — arXiv</a></p>
+</section>
+
+<section>
+<h2>8. PredActor — predictive humanoid controller, который влезает в onboard 50 Hz</h2>
+<p><span class="badge new">NEW PAPER · 21 SEP</span></p>
+<p><strong>PredActor</strong> для Unitree G1 совместно diffusion-предсказывает future physical states и executable actions. В отличие от generator→tracker architectures, predicted state используется как внутреннее steerable representation, а actions идут непосредственно в controller.</p>
+<p>Policy получает proprioception history + optional task context, выдаёт 29 joint-controller commands и предсказывает future state horizon. CFG используется для text behavior, classifier guidance — для steering predicted state trajectory к destination/body objectives.</p>
+<p>После rolling-DDIM и runtime optimization полный callback на Jetson Orin NX составляет <strong>16.79 ms median / 19.38 ms p95</strong> при 20 ms control period; 593 из 600 callbacks уложились в 20 ms. Hardware eval пока в основном demonstrative, но это сильный signal, что <strong>predictive latent может жить непосредственно в fast humanoid controller</strong>.</p>
+<div class="verdict"><span class="badge read">READ 4.5/5</span></div>
+<p class="small"><a href="https://arxiv.org/abs/2609.24840">PredActor — arXiv</a></p>
+</section>
+
+<section>
+<h2>9. Два важных повтора из предыдущего выпуска</h2>
+<div class="grid">
+<div class="kpi">
+<h3>Think Like a World Model, Act Like a VLA</h3>
+<p>Frozen WM features вычисляются offline и дистиллируются в latent VLA через feature-alignment loss. В deployment teacher и projector отсутствуют; 0.8B policy работает за 32 ms / 1.86 GB на RTX 5090. Это сильный вариант: <strong>physics prior only at training time</strong>.</p>
+<p><span class="badge read">READ 4/5</span></p>
+<p class="small"><a href="https://arxiv.org/abs/2609.24682">arXiv</a></p>
+</div>
+<div class="kpi">
+<h3>Opt2VLA</h3>
+<p>Humanoid VLA выдаёт не только geometric motion goals, но и continuous contact-force references; RL whole-body controllers отслеживают оба сигнала. Это хороший кандидат на interface <strong>VLA → physical intent → WBC</strong>.</p>
+<p><span class="badge read">READ 4/5</span></p>
+<p class="small"><a href="https://arxiv.org/abs/2609.23968">arXiv</a></p>
+</div>
+</div>
+</section>
+
+<section>
+<h2>Agentic robotics / frontier-model watch</h2>
+<p>В текущем 5-дневном окне не найден новый независимый real-robot тест типа «GPT/Claude/Gemini напрямую получает camera + robot API» масштаба недавних Robocurve/VIA экспериментов.</p>
+<p>Зато <strong>EmbodiedSWE</strong> даёт более зрелый вариант использования frontier coding agents: модель может автономно искать solution в simulator, писать control code, валидировать его и затем превращать найденное решение в training supervision для VLA. Для industrial robotics это потенциально практичнее, чем держать Claude/Codex в control loop.</p>
+</section>
+
+<section>
+<h2>Как сдвинулся архитектурный тренд</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Парадигма</th><th>Сигнал за 5 дней</th><th>Что это означает</th></tr></thead>
+<tbody>
+<tr><td>Monolithic WAM</td><td><strong>↑</strong> FLUX 3 Action</td><td>Появляется practical open WAM + fine-tuning ecosystem</td></tr>
+<tr><td>Future prediction как обязательный objective</td><td><strong>↓</strong> NowWAM</td><td>Generative denoising representation может быть важнее самого future rollout</td></tr>
+<tr><td>Slow/fast hierarchical intelligence</td><td><strong>↑↑↑</strong> InternW0 + LiMA</td><td>Prediction/intent и reaction естественно работают на разных частотах</td></tr>
+<tr><td>Coding agent в runtime</td><td>↔</td><td>Нового сильного evidence нет</td></tr>
+<tr><td>Coding agent как policy/data engineer</td><td><strong>↑↑↑</strong> EmbodiedSWE</td><td>Verified code превращается в scalable synthetic supervision</td></tr>
+<tr><td>Explicit episodic memory</td><td><strong>↑↑</strong> MemBodied</td><td>История отделяется от raw token context</td></tr>
+<tr><td>Human-in-loop RL</td><td><strong>↑</strong> BEE</td><td>Corrections становятся adaptive constraints, а не BC labels</td></tr>
+<tr><td>Humanoid direct predictive control</td><td><strong>↑↑</strong> PredActor</td><td>Future-state prediction может жить непосредственно в 50 Hz controller</td></tr>
+</tbody>
+</table></div>
+</section>
+
+<section id="hf">
+<h2>🤗 HF radar</h2>
+<p>На текущей Hugging Face Robotics Trending свежая линия <strong>FLUX 3 Action</strong> занимает верхние позиции; Light-O1-Preview также остаётся заметным свежим объектом.</p>
+
+<h3>1. FLUX 3 Action</h3>
+<div class="grid">
+<div class="kpi"><strong>Base</strong><br><span class="small">82 likes · downloads не трекаются · update ~2 дня</span></div>
+<div class="kpi"><strong>SO-101</strong><br><span class="small">361 downloads/month · 34 likes · update ~2 дня</span></div>
+<div class="kpi"><strong>DROID</strong><br><span class="small">253 downloads/month · 22 likes · update ~2 дня</span></div>
+<div class="kpi"><strong>Space</strong><br><span class="small">SO-101 simulation demo available</span></div>
+</div>
+<p><strong>Практическая оценка:</strong> это сейчас первый объект, который стоит реально ставить в экспериментальный план. Для нового embodiment base weights потребуют собственного action head/adaptation. Для SO-101 есть готовый LoRA recipe; для DROID — BF16, FP8, guidance-distilled и 1-step variants.</p>
+<p class="small">
+<a href="https://huggingface.co/black-forest-labs/flux-3-action-base">Base</a> ·
+<a href="https://huggingface.co/black-forest-labs/flux-3-action-so101">SO-101</a> ·
+<a href="https://huggingface.co/black-forest-labs/flux-3-action-droid">DROID</a> ·
+<a href="https://huggingface.co/spaces/multimodalart/flux-3-action-so101-sim">SO-101 Space</a>
+</p>
+
+<h3>2. Light-O1-Preview</h3>
+<p>HF показывает около <strong>334 downloads/month и 19 likes</strong>, update ~2 дня. Это 6B text→reasoning→whole-body-action-token preview, а не полный visual autonomous humanoid policy. Тем не менее action tokenizer и G1 retargeting pipeline остаются интересными для whole-body foundation stack.</p>
+<p><span class="badge read">TRY</span> <a href="https://huggingface.co/LightOriginsHQ/Light-O1-Preview">Light-O1-Preview</a></p>
+
+<h3>3. SeeQ-3B</h3>
+<p>Свежий, но пока нишевый open Q-function / critic для reranking VLA action chunks. Это не mainstream checkpoint, зато концептуально полезный компонент actor–critic robotics stack.</p>
+<p><span class="badge read">NICHE TRY</span> <a href="https://huggingface.co/CMU-AIRe/SeeQ-3B">SeeQ-3B</a></p>
+
+<h3>4. X-Planner benchmark</h3>
+<p><strong>x-square-robot/xplanner-benchmark</strong> обновлён примерно 5 дней назад: около 1.5k test rows, multi-view videos, task/subtask annotations, 167 source datasets. Это benchmark для event-structured embodied planning, а не policy-training corpus.</p>
+<p><span class="badge read">READ / EVAL</span>
+<a href="https://huggingface.co/datasets/x-square-robot/xplanner-benchmark">HF dataset</a> ·
+<a href="https://arxiv.org/abs/2609.25187">X-Planner paper</a></p>
+
+<p class="callout"><strong>Dataset note:</strong> крупного нового multi-hundred-hour robot dataset release, который одновременно попадает в строгое 5-дневное окно и выглядит сильнее уже известных HIW-500 / ABC-130k / Open-H, в текущем срезе не обнаружено. Поэтому старые datasets здесь не повторяются только ради списка.</p>
+</section>
+
+<section>
+<h2>GR00T / Gemini Robotics watch</h2>
+<p><strong>NVIDIA:</strong> нового публичного GR00T N2 checkpoint в окне 21–25 сентября не обнаружено. Официальный NVIDIA материал по-прежнему описывает N2 как следующую WAM-based модель с релизом до конца 2026 года.</p>
+<p><strong>Google DeepMind:</strong> в проверенных официальных источниках за это окно не найден новый Gemini Robotics model release.</p>
+<p class="small">
+<a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-and-Global-Robotics-Leaders-Take-Physical-AI-to-the-Real-World/">NVIDIA: GR00T N2 preview / roadmap</a> ·
+<a href="https://deepmind.google/blog/gemini-robotics-15-brings-ai-agents-into-the-physical-world/">Gemini Robotics background</a>
+</p>
+</section>
+
+<section>
+<h2>5 главных выводов периода</h2>
+<ol>
+<li><strong>WAM превращается из архитектурной идеи в usable open stack.</strong> FLUX 3 Action даёт weights, LeRobot, task LoRA, DROID/SO-101 policies и сильный RoboLab result.</li>
+<li><strong>Но “world model = future video” уже не выглядит обязательным.</strong> NowWAM показывает, что generative denoising prior сам по себе может дать robustness; distillation-work показывает, что WM может вообще исчезнуть из deployment.</li>
+<li><strong>Главная системная архитектура сейчас — multi-rate.</strong> Большой predictive/reasoning layer обновляется редко, маленький action layer быстро реагирует на fresh observation. InternW0 и LiMA дают два независимых варианта.</li>
+<li><strong>Coding agents начинают приносить максимум пользы не как robot pilot, а как automated robotics engineer.</strong> EmbodiedSWE: agentic code search → verified solution → generated demonstrations → learned VLA.</li>
+<li><strong>Память и human feedback становятся first-class modules.</strong> MemBodied показывает fixed episodic memory, BEE — uncertainty-aware human constraints. Generalist policy всё меньше похожа на единственный монолит.</li>
+</ol>
+</section>
+
+<section>
+<h2>Что читать / пробовать полностью</h2>
+<ol>
+<li><strong>FLUX 3 Action</strong> — model card + RoboLab leaderboard + LeRobot recipe.</li>
+<li><strong>EmbodiedSWE</strong> — особенно GEN pipeline и sim→real lamp experiment.</li>
+<li><strong>InternW0</strong> — asynchronous architecture и K/V reuse.</li>
+<li><strong>NowWAM</strong> — ablations past vs future targets; это важная корректировка WAM narrative.</li>
+<li><strong>LiMA</strong> — если интересует dexterous slow/fast hierarchy.</li>
+<li><strong>PredActor</strong> — если интересует onboard G1 control и future-state-guided diffusion.</li>
+</ol>
+<p><strong>Что я бы реально запустил первым:</strong> FLUX 3 Action SO-101/DROID pipeline, затем посмотрел бы адаптацию base action head под свой embodiment; параллельно — EmbodiedSWE как шаблон для coding-agent-generated robotics data.</p>
+</section>
+</main>
+
+<footer>Robot Intelligence Brief · 21–25 сентября 2026 · standalone HTML5 · без JavaScript и внешних зависимостей</footer>
+</div>
+</body>
+</html>

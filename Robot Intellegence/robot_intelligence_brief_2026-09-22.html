@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Robot Intelligence Brief — 18–22 сентября 2026</title>
+  <style>
+    :root{
+      --bg:#f7f8fa;
+      --card:#ffffff;
+      --text:#17202a;
+      --muted:#5d6d7e;
+      --line:#e5e7eb;
+      --accent:#1f4f99;
+      --accent-soft:#eef4ff;
+      --must:#0f766e;
+      --must-bg:#e6fffb;
+      --read:#92400e;
+      --read-bg:#fff7ed;
+      --skip:#6b7280;
+      --skip-bg:#f3f4f6;
+      --shadow:0 8px 24px rgba(17,24,39,.06);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.62;
+    }
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1080px;margin:0 auto;padding:24px}
+    header{
+      background:linear-gradient(135deg,#0f172a,#1e3a8a);
+      color:#fff;
+      border-radius:18px;
+      padding:34px 34px 28px;
+      box-shadow:var(--shadow);
+      margin:24px auto 18px;
+    }
+    header h1{margin:0 0 8px;font-size:clamp(28px,5vw,46px);line-height:1.08}
+    header p{margin:0;color:#dbeafe;font-size:16px}
+    .tldr{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-left:5px solid var(--accent);
+      border-radius:14px;
+      padding:20px 22px;
+      margin:18px 0 24px;
+      box-shadow:var(--shadow);
+    }
+    section{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:24px;
+      margin:18px 0;
+      box-shadow:var(--shadow);
+    }
+    h2{font-size:26px;line-height:1.2;margin:0 0 14px}
+    h3{font-size:20px;margin:22px 0 10px}
+    p{margin:10px 0}
+    .badge{
+      display:inline-block;
+      font-weight:700;
+      font-size:12px;
+      letter-spacing:.02em;
+      padding:4px 8px;
+      border-radius:999px;
+      vertical-align:middle;
+      white-space:nowrap;
+    }
+    .must{color:var(--must);background:var(--must-bg)}
+    .read{color:var(--read);background:var(--read-bg)}
+    .skip{color:var(--skip);background:var(--skip-bg)}
+    .verdict{
+      margin-top:14px;
+      padding:12px 14px;
+      background:#fafafa;
+      border:1px solid var(--line);
+      border-radius:10px;
+      font-weight:600;
+    }
+    .mono{
+      font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+      background:#f8fafc;
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:14px;
+      overflow:auto;
+      white-space:pre-wrap;
+    }
+    .table-wrap{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;min-width:720px}
+    th,td{border-bottom:1px solid var(--line);padding:12px 10px;text-align:left;vertical-align:top}
+    th{background:#f8fafc;font-size:13px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}
+    tr:last-child td{border-bottom:none}
+    ul,ol{padding-left:22px}
+    .small{font-size:14px;color:var(--muted)}
+    .callout{
+      background:var(--accent-soft);
+      border:1px solid #cfe0ff;
+      border-radius:12px;
+      padding:16px 18px;
+    }
+    footer{
+      color:var(--muted);
+      font-size:13px;
+      padding:20px 4px 36px;
+      text-align:center;
+    }
+    @media (max-width:720px){
+      .wrap{padding:14px}
+      header{padding:24px 20px;border-radius:14px}
+      section{padding:18px;border-radius:14px}
+      h2{font-size:22px}
+      .tldr{padding:16px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Robot Intelligence Brief</h1>
+      <p>Обзор за 18–22 сентября 2026 · humanoids, VLA/WAM, agentic robotics, whole-body control, dexterity, Hugging Face</p>
+    </header>
+
+    <main>
+      <div class="tldr">
+        <strong>TL;DR.</strong> За эти 5 дней выделяются четыре сдвига. Во-первых, <strong>Light-O1</strong> показывает масштабируемый pretraining whole-body intelligence на восстановленных из интернет-видео человеческих действиях. Во-вторых, спор <strong>VLA vs World Model</strong> становится ещё менее бинарным: свежая работа <em>Think Like a World Model, Act Like a VLA</em> дистиллирует physical prior world model прямо в representation VLA и удаляет world model из runtime. В-третьих, интерфейс между foundation layer и физическим роботом становится богаче: <strong>Opt2VLA</strong> передаёт вниз уже не только motion target, но и force reference. Наконец, <strong>AR-WAM</strong> специально проектирует robot policy как physical skill backend для внешнего GPT/Claude/Gemini-подобного агента.
+      </div>
+
+      <section>
+        <h2>Рейтинг периода</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Работа</th><th>Главная идея</th><th>Вердикт</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Light-O1</strong></td><td>human-video action pretraining → cross-embodiment whole-body intelligence</td><td><span class="badge must">MUST READ 5/5</span></td></tr>
+              <tr><td><strong>Think Like a World Model, Act Like a VLA</strong></td><td>distill WM latent → дешёвая VLA без WM inference</td><td><span class="badge must">MUST READ 5/5</span></td></tr>
+              <tr><td><strong>Opt2VLA</strong></td><td>VLA → motion + explicit contact force → humanoid WBC</td><td><span class="badge must">MUST READ 5/5</span></td></tr>
+              <tr><td><strong>AR-WAM</strong></td><td>WAM как physical skill backend для AI-agent</td><td><span class="badge must">MUST READ 5/5</span></td></tr>
+              <tr><td><strong>SeeQ</strong></td><td>отдельный generalist critic поверх VLA для long-horizon</td><td><span class="badge must">MUST READ 4.5/5</span></td></tr>
+              <tr><td><strong>Skel-WAM</strong></td><td>skeleton как общий интерфейс human video ↔ robot actions</td><td><span class="badge must">MUST READ 4.5/5</span></td></tr>
+              <tr><td><strong>H-VLA</strong></td><td>semantic key-action → dense motion</td><td><span class="badge read">READ 4/5</span></td></tr>
+              <tr><td><strong>STRIDER</strong></td><td>foothold-precise locomotion + manipulation</td><td><span class="badge read">READ 4/5</span></td></tr>
+              <tr><td><strong>RoboTalk</strong></td><td>small VLMs + tool-use + inter-robot communication</td><td><span class="badge read">READ 3.5/5</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>1. Light-O1 — главный релиз периода</h2>
+        <p><strong>Light-O1: Scaling Whole-Body Intelligence with Human Action Pretraining</strong>, Light Origins, 21 сентября.</p>
+        <p>Основная ставка здесь не на robot teleoperation, а на то, что огромный reservoir физического знания уже содержится в обычных человеческих видео.</p>
+        <div class="mono">internet video
+→ segmentation / human tracking
+→ reconstruction 3D human action
+→ fine-grained language annotation
+→ root trajectory + body pose + hand state
+→ action tokenizer
+→ language + vision + discrete action tokens
+→ autoregressive Transformer</div>
+        <p>Они фактически делают для физических действий то же, что LLM делает с текстом: пытаются сжать distribution человеческого поведения в transferable prior.</p>
+        <p>Scaling-эксперимент начинается с Qwen3.5-4B и независимых моделей на бюджетах от 3.75B до 120B multimodal tokens; максимальный бюджет соответствует примерно 100,000 часам восстановленных human actions. После adaptation к egocentric human data, Unitree G1 teleoperation и LightBot authors показывают снижение prediction loss и whole-body pose error приблизительно по power law.</p>
+        <p>После pretraining foundation prior исполняется через embodiment-specific lower layer — Behavior Foundation Model или diffusion Action Expert. То есть Light-O1 не пытается быть torque controller.</p>
+        <p>На G1 демонстрируются wiping со stepping и позовыми изменениями, поднятие наушников с bed→table, kneeling, one-leg balance и другие whole-body skills. На RoboCasa GR-1 заявлен 79.3% macro success.</p>
+        <p>Open release <strong>Light-O1-Preview 6B</strong> сейчас — прежде всего reasoning text-to-action model: text → reasoning → discrete action codes → 20 Hz whole-body human representation. Action codebook — 65,536 tokens.</p>
+        <div class="verdict"><span class="badge must">MUST READ / MUST TRY</span></div>
+        <p><a href="https://www.lightorigins.cn/en/blog/light-o1">Light-O1 technical report и demos</a><br>
+        <a href="https://huggingface.co/LightOriginsHQ/Light-O1-Preview">Light-O1-Preview на Hugging Face</a></p>
+      </section>
+
+      <section>
+        <h2>2. Think Like a World Model, Act Like a VLA</h2>
+        <p>World Model полезен, потому что objective <code>state + action → future</code> заставляет representation понимать physical consequences. Но для control вовсе не обязательно генерировать future во время inference.</p>
+        <h3>Training</h3>
+        <div class="mono">image
+→ frozen World Model
+→ WM hidden features
+→ feature-alignment loss:
+   VLA latent ≈ World Model latent</div>
+        <h3>Deployment</h3>
+        <div class="mono">observation
+→ обычная VLA
+→ action</div>
+        <p>World Model и projector полностью выбрасываются. Student policy сохраняет baseline architecture и inference cost.</p>
+        <p>Заявленные результаты для 0.8B student: LIBERO 97.9%; RoboCasa-GR1 humanoid 48.2 → 50.5%; real single-arm и bimanual transfer. Inference — 32 ms, память 1.86 GB на RTX 5090.</p>
+        <p>Это создаёт новый вариант между pure VLA и runtime WAM: <strong>World Model как training teacher representation</strong>. Physical understanding можно получить во время обучения и не платить за него в runtime.</p>
+        <div class="verdict"><span class="badge must">MUST READ 5/5</span></div>
+        <p><a href="https://arxiv.org/abs/2609.24682">Paper</a></p>
+      </section>
+
+      <section>
+        <h2>3. Opt2VLA — motion + explicit contact force</h2>
+        <p>Большинство humanoid VLA выдаёт геометрические goals: EEF pose, body pose, motion trajectory или keyframe. Но при почти одинаковой geometry физическая задача может требовать принципиально разной силы взаимодействия.</p>
+        <div class="mono">VLA output =
+geometric motion goal
++
+continuous contact-force reference
+→ task-specific RL whole-body controller
+→ tracks motion + requested force</div>
+        <p>Training demonstrations генерируются через whole-body trajectory optimization с force references и torque supervision. На contact-rich tasks authors показывают улучшенную consistency force regulation и language-conditioned force modulation.</p>
+        <p>Архитектурно это важный шаг от «куда двигаться» к «что физически должно происходить»: pose / velocity / wrench / compliance становятся частью high-level physical intent.</p>
+        <div class="verdict"><span class="badge must">MUST READ 5/5</span></div>
+        <p><a href="https://arxiv.org/abs/2609.23968">Opt2VLA</a></p>
+      </section>
+
+      <section>
+        <h2>4. AR-WAM — physical backend для GPT/Claude/Gemini-like агента</h2>
+        <p>AR-WAM задаёт важный вопрос: если сверху уже находится мощный language/reasoning agent, зачем robot policy повторно понимать natural language?</p>
+        <p>Интерфейс нижней модели упрощается до:</p>
+        <div class="mono">visual target bounding box
++
+operation token
+(PICK / PLACE / OPEN / ...)
+→ 0.5B WAM
+→ scene latent evolution + robot actions</div>
+        <p>Agent получает primitives вроде <code>detect(target)</code>, <code>execute(target, skill)</code>, <code>query(...)</code>. Long-horizon memory и error recovery остаются на agent side, а physical execution — у AR-WAM.</p>
+        <p>Заявлено 87.2% average на standard manipulation, +5.9 pp на memory tasks, +36.7 pp на long-horizon Astribot S1 против strongest baselines, inference 14.1 ms.</p>
+        <p>Это сильный конкурент monolithic VLA: language/reasoning/memory можно оставить внешнему GPT/Claude/Gemini-like agent, а нижняя physical policy получает typed, spatially grounded commands.</p>
+        <div class="verdict"><span class="badge must">MUST READ 5/5</span></div>
+        <p><a href="https://arxiv.org/abs/2609.23578">AR-WAM</a></p>
+      </section>
+
+      <section>
+        <h2>5. SeeQ — generalist critic поверх VLA</h2>
+        <p>SeeQ не создаёт новую action model. Он генерирует several candidate action chunks из actor policy, например π0.5, а затем отдельная model выбирает лучший.</p>
+        <div class="mono">image + task
+→ active subtask text
+→ candidate action chunk
+→ scalar Q-value
+→ best-of-N selection</div>
+        <p>Pretraining checkpoint на HF использует PaliGemma-3B и RoboCOIN subset: 131 tasks, около 40k episodes, 31.3M steps, 3 embodiments; candidate set N=8 от π0.5; chunk 50×14D.</p>
+        <p>Это ещё один аргумент против «одна giant policy решит всё»: actor генерирует proposal, value model занимается selection.</p>
+        <div class="verdict"><span class="badge must">MUST READ 4.5/5</span></div>
+        <p><a href="https://arxiv.org/abs/2609.22085">SeeQ paper</a><br>
+        <a href="https://huggingface.co/CMU-AIRe/SeeQ-3B">SeeQ-3B checkpoint</a></p>
+      </section>
+
+      <section>
+        <h2>6. Skel-WAM — shared representation human ↔ robot</h2>
+        <p>Human и robot embodiments сильно различаются, поэтому Skel-WAM ищет общий физический язык: <strong>hand skeleton</strong>.</p>
+        <p>Human и robot motion кодируются через skeleton overlays и 2.5D hand keypoints. Video Expert + Keypoint Expert учат общую dynamics, а Action Expert, обученный только на robot data, переводит predictions в executable control.</p>
+        <p>Заявлены 79.86% на 4 real bimanual tasks и 63.29% на 7 simulated tasks. На unseen task variations human+robot training поднимает success 38.89 → 86.11%.</p>
+        <p>Вместе с Light-O1, GR00T и RoboTok это делает выбор physical lingua franca между human video и robot actions одной из центральных research problems.</p>
+        <div class="verdict"><span class="badge must">MUST READ 4.5/5</span></div>
+        <p><a href="https://healorcai.github.io/Skel-WAM/">Skel-WAM project</a></p>
+      </section>
+
+      <section>
+        <h2>7. H-VLA — semantic action hierarchy</h2>
+        <p>H-VLA делит policy на Key-Action Model и Motion Planning Model. Первая выбирает semantic manipulation subgoal, вторая превращает его в dense future actions.</p>
+        <p>Дополнительно вводится unified camera-centric action space, чтобы уменьшить sensitivity к embodiment, camera и viewpoint.</p>
+        <p>На SimplerEnv authors сообщают 91% Google Robot visual matching, 84% variant aggregation, 81% WidowX. На Agilex real robot заявлено преимущество над strongest baseline на +10, +47 и +16 pp для ID / OOD object position / OOD scene+object.</p>
+        <div class="verdict"><span class="badge read">READ 4/5</span></div>
+      </section>
+
+      <section>
+        <h2>8. STRIDER — foothold-precise humanoid control</h2>
+        <p>STRIDER решает проблему, которую generic velocity locomotion обрабатывает плохо: поставить конкретную стопу в конкретное место, продолжая manipulation.</p>
+        <p>Stack включает terrain-aware 3D stepping, AMP natural walking и Cartesian upper-body control. Walking и stepping specialists distill'ятся в одну policy через LD-PPO.</p>
+        <p>Архитектурно это хороший нижний слой для agent/VLA stack: high-level model задаёт desired EEF/task/terrain target, а controller сам решает gait/foothold details.</p>
+        <div class="verdict"><span class="badge read">READ 4/5</span></div>
+        <p><a href="https://arxiv.org/abs/2609.23483">STRIDER</a></p>
+      </section>
+
+      <section>
+        <h2>9. RoboTalk — tool-using multi-robot agents</h2>
+        <p>RoboTalk генерирует 7,950 multimodal trajectories для 53 multi-robot kitchen tasks, где small VLM одновременно выбирает skill-level actions и общается с другим роботом.</p>
+        <p>В demonstrations присутствуют perception tool calls, navigation, manipulation, communication, reasoning traces и leader/follower protocol. После fine-tuning open VLMs доходят до 77% success на unseen tasks против около 2% untuned models.</p>
+        <p>Главный signal: natural language может стать не только human interface, но и learned decentralized coordination protocol между роботами.</p>
+        <div class="verdict"><span class="badge read">READ 3.5/5</span></div>
+      </section>
+
+      <section>
+        <h2>VLA vs World Model — что изменилось</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Вариант</th><th>Пример</th></tr></thead>
+            <tbody>
+              <tr><td>World model напрямую в runtime</td><td>классические WAM</td></tr>
+              <tr><td>WM как internal predictive latent</td><td>DeCAL / GeomVLA</td></tr>
+              <tr><td>WM как critic / imagination layer</td><td>WISE</td></tr>
+              <tr><td><strong>WM как training teacher, отсутствующий в inference</strong></td><td><strong>Think Like a WM, Act Like a VLA</strong></td></tr>
+              <tr><td>Physical dynamics в specialist controllers</td><td>Opt2VLA / STRIDER</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="callout"><strong>Вывод:</strong> вопрос «нужен ли World Model?» становится всё менее полезным. Гораздо важнее — на каком уровне системы нужен predictive physical prior и обязательно ли выполнять его в runtime.</p>
+      </section>
+
+      <section>
+        <h2>Agentic robotics watch</h2>
+        <p>За строгий интервал 18–22 сентября не появилось нового Claude Code/Codex-on-robot эксперимента масштаба VIA/RHO/SafeHarness.</p>
+        <p>Но AR-WAM важнее очередной демонстрации: он проектирует сам robot policy interface под внешний agent. Вместо <code>GPT → language → VLA</code> появляется:</p>
+        <div class="mono">GPT / Claude / Gemini
+→ object grounding + typed skill
+→ physical WAM / VLA</div>
+        <p>Это практически аналог MCP/tool API для physical world.</p>
+      </section>
+
+      <section id="hf-radar">
+        <h2>🤗 HF radar</h2>
+        <h3>1. Light-O1-Preview</h3>
+        <p>Главный новый HF signal. 6B, fresh release. Что это: <strong>text → reasoning → whole-body action tokens</strong>. Интересен открытым tokenizer'ом, WebUI/3D preview и G1 MuJoCo example. Важно: это не полный vision-conditioned autonomous loco-manipulation stack.</p>
+        <div class="verdict"><span class="badge read">TRY</span></div>
+        <p><a href="https://huggingface.co/LightOriginsHQ/Light-O1-Preview">HF model</a></p>
+
+        <h3>2. SeeQ-3B</h3>
+        <p>Не policy, а open Q-function для reranking candidate action chunks. Особенно полезен для actor-critic VLA research.</p>
+        <div class="verdict"><span class="badge read">TRY</span></div>
+        <p><a href="https://huggingface.co/CMU-AIRe/SeeQ-3B">HF checkpoint</a></p>
+
+        <h3>3. SmolVLA</h3>
+        <p>Остаётся главным practical research baseline: 0.5B, LeRobot ecosystem, удобен для быстрых ablations по loss/data/action representation.</p>
+        <div class="verdict"><span class="badge read">BASELINE</span></div>
+
+        <h3>4. Griffin Alpha-S</h3>
+        <p>5B VLA, ранний fresh release, LeRobot-friendly base model с flow action expert.</p>
+        <div class="verdict"><span class="badge read">TRY, EARLY</span></div>
+
+        <h3>Datasets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Dataset</th><th>Сигнал</th><th>Оценка</th></tr></thead>
+            <tbody>
+              <tr><td><strong>ABC-130k</strong></td><td>130,703 trajectories · 3,590.7 h · 23.1 TB</td><td><span class="badge must">HIGH VALUE</span></td></tr>
+              <tr><td><strong>World-SimReady-Home</strong></td><td>500 household scenes · 4,462 rooms · simulation-ready materials</td><td><span class="badge read">TRY</span></td></tr>
+              <tr><td><strong>TacVerse</strong></td><td>~40M rows · 145 GB · visuo-tactile · LeRobot-compatible</td><td><span class="badge read">TRY</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>GR00T / Gemini watch</h2>
+        <p>За 18–22 сентября не было найдено нового публичного checkpoint GR00T N2 или нового крупного Gemini Robotics model release.</p>
+        <p>Главный foundation-model релиз окна — Light-O1, и он особенно интересен как альтернативная scaling strategy:</p>
+        <div class="mono">purpose-built robot hours
+vs
+internet-scale reconstructed human actions
++ small embodiment adaptation</div>
+      </section>
+
+      <section>
+        <h2>5 главных выводов периода</h2>
+        <ol>
+          <li><strong>Human action video превращается из auxiliary data в потенциально основной pretraining corpus.</strong> Light-O1 — сильнейший signal этой линии.</li>
+          <li><strong>World model необязательно нужен в runtime.</strong> Его predictive objective можно дистиллировать в дешёвую VLA.</li>
+          <li><strong>Интерфейс foundation model → humanoid controller становится богаче.</strong> Теперь это не только pose/keyframe/EEF target, но и force/wrench intent.</li>
+          <li><strong>Agentic robotics формирует собственный software stack.</strong> AR-WAM предлагает оставить language/reasoning/memory у внешнего GPT-like агента, а lower physical policy кормить typed spatial commands.</li>
+          <li><strong>Robot intelligence всё больше выглядит как иерархия моделей.</strong> Actor, critic, world model, safety harness и specialist controllers могут масштабироваться независимо.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>Что читать и пробовать в первую очередь</h2>
+        <ol>
+          <li><strong>Light-O1</strong> — human-action scaling law и whole-body architecture.</li>
+          <li><strong>Think Like a World Model, Act Like a VLA</strong> — самый чистый свежий взгляд на роль WM.</li>
+          <li><strong>AR-WAM</strong> — особенно релевантно к схеме ChatGPT/Claude/Gemini → robot API.</li>
+          <li><strong>Opt2VLA</strong> — наиболее важный свежий interface paper между VLA и humanoid WBC.</li>
+        </ol>
+        <p>Из практики — отдельно попробовать <strong>Light-O1-Preview</strong> и изучить его action representation/tokenizer.</p>
+      </section>
+    </main>
+
+    <footer>
+      Robot Intelligence Brief · выпуск 18–22 сентября 2026 · оформлено как standalone HTML5 без внешних зависимостей и JavaScript
+    </footer>
+  </div>
+</body>
+</html>
