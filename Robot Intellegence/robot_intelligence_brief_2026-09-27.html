@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Robot Intelligence Brief — 23–27 сентября 2026</title>
+<meta name="description" content="Обзор новых исследований и релизов по robot intelligence за 23–27 сентября 2026.">
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#64748b;--line:#e5eaf2;--blue:#1d4ed8;--blue2:#eff6ff;--green:#0f766e;--greenbg:#ecfdf5;--orange:#9a3412;--orangebg:#fff7ed;--gray:#475569;--graybg:#f1f5f9;--purple:#6d28d9;--purplebg:#f5f3ff;--shadow:0 10px 28px rgba(15,23,42,.06)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:1120px;margin:0 auto;padding:22px}
+header{margin:18px 0 20px;padding:34px;border-radius:20px;background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 72%,#312e81 100%);color:#fff;box-shadow:var(--shadow)}
+header h1{font-size:clamp(30px,5vw,48px);line-height:1.08;margin:0 0 8px}.sub{color:#dbeafe}.meta{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px}.pill{padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.12);font-size:12px;font-weight:700}
+section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:23px;margin:16px 0;box-shadow:var(--shadow)}.tldr{border-left:5px solid var(--blue)}
+h2{font-size:26px;margin:0 0 14px;line-height:1.2}h3{font-size:20px;margin:22px 0 9px}p{margin:9px 0}.small{font-size:13px;color:var(--muted)}
+.badge{display:inline-flex;padding:4px 9px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.025em;white-space:nowrap}.must{color:var(--green);background:var(--greenbg)}.read{color:var(--orange);background:var(--orangebg)}.skip{color:var(--gray);background:var(--graybg)}.new{color:var(--purple);background:var(--purplebg)}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;min-width:800px}th,td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);background:#f8fafc}tr:last-child td{border-bottom:0}
+.code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f8fafc;border:1px solid var(--line);border-radius:11px;padding:14px;white-space:pre-wrap;overflow:auto}
+.why{margin-top:14px;padding:14px 16px;background:var(--blue2);border:1px solid #cfe0ff;border-radius:12px}.why strong{color:#1e40af}.verdict{margin-top:13px;padding-top:12px;border-top:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.kpi{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fbfdff}
+ul,ol{padding-left:22px}footer{color:var(--muted);font-size:12px;text-align:center;padding:24px 6px 34px}
+@media(max-width:760px){.wrap{padding:12px}.grid{grid-template-columns:1fr}header{padding:24px 20px;border-radius:14px}section{padding:18px;border-radius:14px}h2{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>Robot Intelligence Brief</h1>
+<div class="sub">Срез за 23–27 сентября 2026 · humanoids · VLA/WAM · coding agents · deployment adaptation · HF radar</div>
+<div class="meta"><span class="pill">Окно: 5 календарных дней</span><span class="pill">Русский технический дайджест</span><span class="pill">Повторы допускаются только при сохранении значимости</span></div>
+</header>
+<main>
+
+<section class="tldr">
+<h2>TL;DR</h2>
+
+<p><strong>Главный сдвиг за 23–27 сентября:</strong> robot intelligence всё заметнее распадается на специализированные уровни, а не сходится к одной монолитной policy. <strong>FLUX 3 Action</strong> сделал WAM практически доступным как open-weight foundation policy; две свежие работы с coding agents показали, что Claude Code/Codex-подобные системы полезны не только как runtime-agent, но как <strong>авторы обобщаемых planners и генераторы supervision для VLA</strong>.</p>
+<p>Вторая линия — <strong>multi-rate physical intelligence</strong>. InternW0 и LiMA отделяют медленное prediction/intent от быстрого action refinement, тогда как NowWAM ставит под сомнение саму необходимость future-video target: часть выигрыша WAM может идти от generative denoising prior, а не от явного предсказания будущего.</p>
+<p>Третья линия — deployment intelligence вокруг policy: AdaHVLA адаптирует agent harness по опыту робота, Self-Adaptive VLA использует собственные неудачные rollouts для компенсации hardware shift, MemBodied добавляет фиксированную episodic memory, а BEE превращает human corrections в uncertainty-aware constraints. На Hugging Face главный практический релиз — FLUX 3 Action; из данных особенно интересны свежие Unitree G1 whole-body household datasets и multi-embodiment Uranus-Demo-Data.</p>
+</section>
+
+<section>
+<h2>Рейтинг периода</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Работа / релиз</th><th>Что изменилось</th><th>Почему это важно</th><th>Вердикт</th></tr></thead>
+<tbody>
+<tr><td><strong>FLUX 3 Action</strong></td><td>Open-weight 7B WAM + DROID/SO-101 + LeRobot</td><td>WAM становится воспроизводимой engineering platform, а не только research prototype</td><td><span class="badge must">MUST READ 5/5</span></td></tr>
+<tr><td><strong>Coding Agents for Generalized TAMP</strong></td><td>Claude Code и Codex синтезируют reusable planning programs</td><td>High-level robot planning можно частично автоматизировать через program synthesis</td><td><span class="badge must">MUST READ 5/5</span></td></tr>
+<tr><td><strong>EmbodiedSWE</strong></td><td>Coding agent solution → diversified trajectories → VLA</td><td>Agentic search превращается в scalable supervision для neural policy</td><td><span class="badge must">MUST READ 5/5</span></td></tr>
+<tr><td><strong>InternW0</strong></td><td>Slow video expert + fast action expert + K/V reuse</td><td>Predictive intelligence выводится из критического fast-control path</td><td><span class="badge must">MUST READ 5/5</span></td></tr>
+<tr><td><strong>NowWAM</strong></td><td>Future target не обязателен для generative robot control</td><td>Меняет интерпретацию того, зачем WAM вообще помогает policy</td><td><span class="badge must">MUST READ 5/5</span></td></tr>
+<tr><td><strong>LiMA</strong></td><td>Future Dreamer + Motion Refiner</td><td>Multi-rate architecture переносится в dexterous bimanual control</td><td><span class="badge must">MUST READ 4.5/5</span></td></tr>
+<tr><td><strong>AdaHVLA</strong></td><td>Harness сам ревизуется по execution evidence</td><td>Agent harness становится обучаемой частью robot intelligence</td><td><span class="badge read">READ 4.5/5</span></td></tr>
+<tr><td><strong>Self-Adaptive VLA</strong></td><td>Policy адаптируется к hardware shift по собственным rollout'ам</td><td>Снижает зависимость от ручной recalibration fleet deployment</td><td><span class="badge read">READ 4.5/5</span></td></tr>
+<tr><td><strong>MemBodied</strong></td><td>Fixed-size episodic memory вместо растущего visual context</td><td>Делает long-horizon memory вычислительно приемлемой</td><td><span class="badge read">READ 4.5/5</span></td></tr>
+<tr><td><strong>BEE</strong></td><td>Human correction как adaptive constraint</td><td>Позволяет online RL выходить за imitation, не теряя safety prior</td><td><span class="badge read">READ 4.5/5</span></td></tr>
+<tr><td><strong>Decoupled Early Exits</strong></td><td>Compute allocation по VLM / action expert / denoising</td><td>VLA compute становится task-dependent resource, а не фиксированной ценой</td><td><span class="badge read">READ 4/5</span></td></tr>
+</tbody>
+</table></div>
+</section>
+
+<section>
+<h2>1. FLUX 3 Action — WAM становится практической open platform</h2>
+<p><span class="badge new">RELEASE · 23 SEP</span></p>
+<p>Black Forest Labs выпустила <strong>FLUX 3 Action</strong>, 7B open-weight World Action Model. Она совместно денойзит future-video и action tokens: frozen video VAE кодирует изображения, Qwen3-VL-4B кодирует instruction, а единый diffusion transformer предсказывает 32-step action chunk и, при необходимости, будущие frames.</p>
+<p>DROID-finetune занял первое место на публичном <strong>RoboLab-120</strong> с 42.92% success против 36.8% у Cosmos3-Nano-Policy и 28.0% у π0.5 в опубликованном leaderboard. В отличие от многих WAM papers, релиз сразу включает base weights, DROID и SO-101 checkpoints, LeRobot integration, LoRA path и оптимизированные variants.</p>
+<p><strong>Ограничение:</strong> model card прямо предупреждает, что policy выдаёт joint targets и не гарантирует velocity/force/workspace constraints; physical safety остаётся отдельным слоем.</p>
+<div class="why"><strong>Почему это важно.</strong> До этого WAM часто было проще обсуждать, чем реально fine-tune'ить. FLUX 3 Action превращает world-action modeling в доступный engineering baseline: теперь можно сравнивать VLA и WAM на собственном embodiment без самостоятельной сборки всего video-action стека.</div>
+<div class="verdict"><span class="badge must">MUST READ / MUST TRY</span></div>
+<p class="small"><a href="https://huggingface.co/blog/black-forest-labs/flux-3-action">Обзор релиза</a> · <a href="https://huggingface.co/black-forest-labs/flux-3-action-base">Base</a> · <a href="https://huggingface.co/black-forest-labs/flux-3-action-so101">SO-101</a> · <a href="https://huggingface.co/black-forest-labs/flux-3-action-droid">DROID</a></p>
+</section>
+
+<section>
+<h2>2. Coding Agents for Generalized TAMP — Astra/Claude пишут planners, которые обобщаются</h2>
+<p><span class="badge new">PAPER · 24 SEP</span></p>
+<p>Работа проверяет Claude Code (Opus 5) и Codex с GPT-5.6 Sol и <strong>GPT-6 Astra</strong> не как online robot controller, а как program synthesizer для generalized task-and-motion planning. Агент получает task description и simulator access, сам экспериментирует со средой, пишет программу, а затем программа замораживается и тестируется на unseen instances.</p>
+<p>На 28 simulated environments из KinDER и PDDLStream авторы оценили 980 сгенерированных программ на 100 held-out instances каждая — 98,000 episodes. На 16 средах, где доступен hand-engineered planner, coding-agent programs показывают mean success от 56% до 95% против 47% у planners; при росте object count они также требуют примерно на порядок меньше per-instance compute в среднем.</p>
+<div class="why"><strong>Почему это важно.</strong> Это сильный аргумент, что frontier coding model может переносить computation из runtime в <em>design time</em>: один раз экспериментировать, написать reusable planner и дальше исполнять обычный код. Для robot intelligence это потенциально дешёвый System-2 слой над learned low-level skills — особенно там, где задачи меняются комбинаторно, а dynamics достаточно моделируемы.</div>
+<div class="verdict"><span class="badge must">MUST READ 5/5</span></div>
+<p class="small"><a href="https://arxiv.org/abs/2609.30233">arXiv</a> · <a href="https://huggingface.co/papers/2609.30233">HF paper page</a></p>
+</section>
+
+<section>
+<h2>3. EmbodiedSWE — coding agent как автоматический robotics engineer и data engine</h2>
+<p><span class="badge new">PAPER + CODE · 23 SEP</span></p>
+<p>EmbodiedSWE строит agent-native benchmark для long-horizon dexterous robotics: 6 task suites, 28 tasks, 17 embodiments и горизонты до примерно 30 минут. Coding agent взаимодействует с simulator, пишет и отлаживает solution, а затем <strong>EmbodiedSWE-GEN</strong> расширяет одну verified solution в большой набор разнообразных trajectories для обучения VLA.</p>
+<p>Ключевой результат не в том, что agent умеет решить конкретный simulation task, а в том, что его programmatic solution становится supervision: авторы показывают рост VLA performance при увеличении числа generated demonstrations и real-robot completion после fine-tuning только на coding-agent-generated simulation data.</p>
+<div class="why"><strong>Почему это важно.</strong> Это соединяет две ранее раздельные ветки: agentic coding и robot imitation learning. Вместо дорогостоящего ручного teleoperation coding agent может сначала найти корректную процедуру в simulator, а затем автоматически размножить её в data distribution, пригодную для быстрой neural policy в runtime.</div>
+<div class="verdict"><span class="badge must">MUST READ 5/5</span></div>
+<p class="small"><a href="https://arxiv.org/abs/2609.27308">arXiv</a> · <a href="https://embodiedswe.github.io/">Project</a> · <a href="https://github.com/EmbodiedSWE/EmbodiedSWE">Code</a></p>
+</section>
+
+<section>
+<h2>4. InternW0 — world model не должен тормозить action loop</h2>
+<p><span class="badge new">PAPER · 23 SEP</span></p>
+<p>InternW0 разделяет computation на high-capacity <strong>video expert</strong> и lightweight <strong>action expert</strong>. Video pathway строит более длинный predictive context, а action expert обновляется быстрее; layerwise K/V переиспользуются и адаптируются к новым observations через context routing, вместо полной video regeneration на каждом motor update.</p>
+<p>Training mixture — около 7,200 часов heterogeneous robot и egocentric data. Project page сообщает 98.6% LIBERO average, 93.12% RoboTwin 2.0-Full и 16.47 Hz model-side policy updates; contact-aware post-training добавляет force/tactile channels для contact-rich задач.</p>
+<div class="why"><strong>Почему это важно.</strong> Это решает один из фундаментальных конфликтов WAM: богатое prediction дорого, а физическая обратная связь должна быть быстрой. Asynchronous architecture позволяет оставить predictive world context в системе, не заставляя motor control ждать новый video rollout.</div>
+<div class="verdict"><span class="badge must">MUST READ 5/5</span></div>
+<p class="small"><a href="https://arxiv.org/abs/2609.27656">arXiv</a> · <a href="https://internrobotics.github.io/internw0/">Project</a></p>
+</section>
+
+<section>
+<h2>5. NowWAM — future prediction может быть не причиной успеха WAM</h2>
+<p><span class="badge new">PAPER · 23 SEP</span></p>
+<p>NowWAM убирает отдельный future-image target. Во время training current observation зашумляется по diffusion trajectory, а одна и та же visual stream одновременно учится denoising и action prediction. В inference policy получает clean current observation — без visual rollout.</p>
+<p>Контролируемый ablation особенно показателен: future target t+32 даёт 83.70%, а past target t−16 — 83.80%; clean-only adaptation заметно хуже. На LIBERO-Plus NowWAM достигает 87.7% с FLUX2-Klein, использует вдвое меньше visual tokens и сокращает training step time с 2.85 до 1.63 s. Text-to-image Z-Image backbone также достигает 87.8%.</p>
+<div class="why"><strong>Почему это важно.</strong> Работа меняет causal story вокруг WAM. Если benefit приходит в большой степени из generative denoising representation, а не из явного foresight, то часть робот-систем можно сделать значительно проще и дешевле — оставив generative prior, но не оплачивая future-video generation.</div>
+<div class="verdict"><span class="badge must">MUST READ 5/5</span></div>
+<p class="small"><a href="https://arxiv.org/abs/2609.28339">arXiv</a> · <a href="https://xmz111.github.io/NowWAM/">Project</a></p>
+</section>
+
+<section>
+<h2>6. LiMA — slow imagination + fast dexterous reaction</h2>
+<p><span class="badge new">PAPER · 23 SEP</span></p>
+<p>LiMA строит asynchronous dual-system для bimanual dexterity. Slow <strong>Future Dreamer</strong> генерирует sparse long-horizon intent, а fast <strong>Motion Refiner</strong> обновляет dense actions по свежим observations. Latent Schrödinger Bridge Coupling связывает редкие intention updates с высокой action frequency.</p>
+<p>На шести real-world bimanual tasks авторы сообщают 70.8% overall task success и 78.9% average subtask success; amortized inference latency на 32-step chunk — 325 ms против 600 ms у Cosmos-Policy в их H100 comparison.</p>
+<div class="why"><strong>Почему это важно.</strong> В dexterous manipulation особенно опасно держать high-level reasoning и contact reaction на одной частоте: пальцы могут потерять объект быстрее, чем большая generative model пересчитает план. LiMA показывает практически пригодную архитектуру, где slow world imagination задаёт intent, а fast subsystem сохраняет физическую реактивность.</div>
+<div class="verdict"><span class="badge must">MUST READ 4.5/5</span></div>
+<p class="small"><a href="https://arxiv.org/abs/2609.28431">arXiv</a> · <a href="https://ccdcs.github.io/LiMA_repo/">Project</a></p>
+</section>
+
+<section>
+<h2>7. AdaHVLA — harness вокруг VLA становится обучаемым</h2>
+<p><span class="badge new">PAPER · 24 SEP</span></p>
+<p>AdaHVLA атакует long-horizon failure не изменением самой VLA, а адаптацией <strong>code-based coordination harness</strong>, который хранит task history, progress и orchestration logic. Evidence analysis, harness revision и behavioral assessment разделены на разные agent contexts; revision graph связывает hypotheses, изменения и observed effects.</p>
+<p>На NaVILA-LH mean test success растёт с 22.5% до 57.5%; на manipulation tests улучшение достигает 30.8 percentage points поверх initial harness для трёх VLA backbones. Авторы также показывают real-world deployment.</p>
+<div class="why"><strong>Почему это важно.</strong> Это переносит важную идею из software agents в robotics: качество системы определяется не только foundation model, но и stateful harness вокруг неё. Такой harness можно улучшать быстрее и дешевле, чем переобучать VLA, а значит orchestration/memory/recovery становятся самостоятельным объектом обучения.</div>
+<div class="verdict"><span class="badge read">READ 4.5/5</span></div>
+<p class="small"><a href="https://arxiv.org/abs/2609.29204">arXiv</a></p>
+</section>
+
+<section>
+<h2>8. Self-Adaptive VLA — robot использует собственные ошибки как calibration context</h2>
+<p><span class="badge new">PAPER · 24 SEP</span></p>
+<p>Self-Adaptive VLA предназначена для hardware shifts: actuation bias, encoder offsets и изменения workstation. Lightweight context encoder сжимает прошлые visual observations, proprioception и actions в latent context token, который через AdaLN модулирует policy; несколько context tokens можно ensemble'ить для iterative correction.</p>
+<p>На четырёх precision-critical bimanual/dexterous tasks система восстанавливает более 80% performance базовой policy под hardware shifts. На project demo перенос со Station 1 на Station 2 даёт 0/5 для base policy, 2/5 после одного failed trial в context и 5/5 после двух.</p>
+<div class="why"><strong>Почему это важно.</strong> Fleet robotics ломается не только на новых задачах, но и на медленном дрейфе железа. Если robot может сам оценить собственные failed rollouts и компенсировать bias без полного retraining/recalibration, резко снижается эксплуатационная стоимость deployment на сотнях устройств.</div>
+<div class="verdict"><span class="badge read">READ 4.5/5</span></div>
+<p class="small"><a href="https://arxiv.org/abs/2609.30092">arXiv</a> · <a href="https://icefoxzhx.github.io/self-adaptive-vla/">Project</a></p>
+</section>
+
+<section>
+<h2>9. MemBodied — episodic memory без бесконечного visual context</h2>
+<p><span class="badge new">PAPER + CODE · 23 SEP</span></p>
+<p>MemBodied добавляет fixed-size episodic memory из двух частей: associative state, обновляемый между policy calls, и episode anchor, сохраняющий компактное представление initial scene. Policy больше не обязана каждый раз получать всю историю кадров.</p>
+<p>На пяти RMBench memory tasks система достигает 7.81× mean success относительно stateless policy и 2.98× относительно vanilla recurrent memory; strongest memory baseline она превосходит в 1.3× при 10× меньшем числе дополнительных parameters. На fully observable LIBERO-Long результат — 90.6%, +5.4 points к stateless π0.</p>
+<div class="why"><strong>Почему это важно.</strong> Long-horizon household tasks требуют помнить исчезнувшие из поля зрения объекты, уже выполненные этапы и раннее состояние сцены. Fixed memory делает это без квадратично растущего multimodal context, то есть приближает persistent robot memory к production latency.</div>
+<div class="verdict"><span class="badge read">READ 4.5/5</span></div>
+<p class="small"><a href="https://arxiv.org/abs/2609.28256">arXiv</a> · <a href="https://github.com/declare-lab/MemBodied">Code</a></p>
+</section>
+
+<section>
+<h2>10. BEE — human intervention как constraint для real-world RL</h2>
+<p><span class="badge new">PAPER · 23 SEP</span></p>
+<p>BEE рассматривает human correction не как action, который надо копировать, а как evidence о допустимом изменении policy. Correction Model предсказывает correction и её consistency по каждой action dimension; стабильные corrections задают tight constraint, а вариативные позволяют policy исследовать и превзойти expert imitation.</p>
+<p>На трёх real-world manipulation tasks и LIBERO-Pro при matched online-data budget authors сообщают 91.2% average success против 57.5% у RLT и 42.1% у DSRL, одновременно снижая intervention rate на real tasks.</p>
+<div class="why"><strong>Почему это важно.</strong> В real-robot RL человеческое внимание — один из самых дорогих ресурсов. BEE позволяет использовать каждое вмешательство не как единичный label, а как локальную геометрию safety/skill constraint, что потенциально масштабирует post-training на реальные роботы значительно лучше обычного DAgger-style cloning.</div>
+<div class="verdict"><span class="badge read">READ 4.5/5</span></div>
+<p class="small"><a href="https://arxiv.org/abs/2609.27450">arXiv</a></p>
+</section>
+
+<section>
+<h2>11. Efficient VLA deployment — compute тоже становится adaptive</h2>
+<p><span class="badge new">PAPER · 24 SEP</span></p>
+<p><strong>Decoupled Early Exits</strong> рассматривает flow-matching VLA как три независимые compute axes: depth VLM backbone (V), depth action expert (A) и число denoising steps (D). Lightweight Exit Transformers позволяют останавливать backbone и action expert на разных глубинах; KV-cache synthesis заполняет пропущенные backbone states.</p>
+<p>На SmolVLA и π0.5 в LIBERO/Meta-World joint configurations сокращают latency на 79.2% и FLOPs на 31.8%, при этом mean success в их experiments растёт на 5.6%.</p>
+<div class="why"><strong>Почему это важно.</strong> Robot task difficulty неодинакова: удерживать уже схваченный объект и интерпретировать сложную новую сцену не должны стоить одинаковое количество compute. Task-dependent inference budget — важный шаг к on-device foundation policies, где power и latency ограничены жёстче, чем в cloud LLM.</div>
+<div class="verdict"><span class="badge read">READ 4/5</span></div>
+<p class="small"><a href="https://arxiv.org/abs/2609.29382">arXiv</a></p>
+</section>
+
+<section>
+<h2>Agentic robotics: два разных пути уже хорошо различимы</h2>
+<div class="grid">
+<div class="kpi"><h3>Agent → reusable program</h3><p><strong>Generalized TAMP</strong>: coding agent исследует simulator, пишет planner/controller, после чего LLM можно убрать из runtime.</p></div>
+<div class="kpi"><h3>Agent → training data</h3><p><strong>EmbodiedSWE</strong>: coding agent находит verified solution, а система превращает её в demonstrations для neural VLA.</p></div>
+</div>
+<div class="why"><strong>Почему это важно.</strong> Это более зрелая постановка, чем «давайте GPT напрямую крутить motor API». Frontier model может тратить много compute там, где это допустимо — во время engineering/training — а production robot затем исполняет компактный deterministic program или learned policy с низкой latency.</div>
+</section>
+
+<section>
+<h2>VLA vs WAM: куда качнулся маятник</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Тезис</th><th>Свежий evidence</th><th>Вывод</th></tr></thead>
+<tbody>
+<tr><td>WAM должен явно генерировать будущее</td><td>NowWAM</td><td>Не всегда: denoising prior сам может быть главным источником robustness</td></tr>
+<tr><td>Prediction и action должны быть одной частоты</td><td>InternW0, LiMA</td><td>Скорее нет: slow prediction + fast reaction выглядит естественнее</td></tr>
+<tr><td>VLA достаточно без системной памяти</td><td>MemBodied, AdaHVLA</td><td>Long-horizon intelligence требует persistent state/harness</td></tr>
+<tr><td>Deployment shift решается retraining</td><td>Self-Adaptive VLA</td><td>Часть shift можно компенсировать in-context по собственным rollouts</td></tr>
+<tr><td>General reasoning должен жить внутри robot policy</td><td>Coding TAMP, EmbodiedSWE</td><td>Часть System-2 intelligence можно вынести в program/data synthesis</td></tr>
+</tbody>
+</table></div>
+</section>
+
+<section id="hf">
+<h2>🤗 HF radar — 23–27 сентября</h2>
+
+<h3>1. FLUX 3 Action collection</h3>
+<p>На HF WAM trending свежая линейка Black Forest Labs занимает верхние позиции: base model, SO-101 и DROID. На момент проверки SO-101 показывает примерно 487 monthly downloads / 34 likes, DROID — около 344 / 23; base набрал около 88 likes. Числа быстро меняются, поэтому важнее сам факт живого LeRobot ecosystem сразу после релиза.</p>
+<div class="why"><strong>Почему это важно.</strong> Это не просто checkpoint: наличие embodiment-specific heads, SO-101 recipe и DROID variants резко снижает barrier-to-entry для экспериментов «WAM vs VLA» на собственном железе.</div>
+<p class="small"><a href="https://huggingface.co/models?other=world-action-model">HF WAM trending</a> · <a href="https://huggingface.co/black-forest-labs/flux-3-action-base">Base</a></p>
+
+<h3>2. Unitree G1 whole-body household datasets</h3>
+<p>Unitree за последние сутки обновила большой пакет G1 WBT datasets: dishwasher loading, tidying living room, cushions, clothes, laundry, supermarket shelf organizing и другие tasks для Inspire/BrainCo hands. Эти datasets содержат full robot configuration, EEF targets и hand commands; уже существующие WBT entries показывают сотни episodes на задачу и LeRobot-compatible structure.</p>
+<div class="why"><strong>Почему это важно.</strong> Дефицит humanoid data сегодня — не в ещё одном tabletop grasp, а в <strong>whole-body household trajectories</strong>, где locomotion, waist, bimanual reach и dexterous hand control связаны в одну последовательность. Такой corpus нужен для post-training humanoid VLA/WAM и для честных исследований locomotion-manipulation integration.</div>
+<p class="small"><a href="https://huggingface.co/unitreerobotics/datasets">Unitree datasets</a> · <a href="https://huggingface.co/collections/unitreerobotics/unifolm-wbt-dataset">WBT collection</a></p>
+
+<h3>3. D-Robotics Uranus-Demo-Data</h3>
+<p>Свежо обновлённый dataset содержит около 1,550 samples / 12.1 GB и готовые примеры для разных embodiments, включая ALOHA, ARX5, UR5, Franka, G1, DOS-W1 и X5. Каждый sample упакован как self-contained environment: MJCF/XML, calibrated cameras, qpos trajectory, reference images и ground-truth video. HF показывает около 1.5k downloads за месяц.</p>
+<div class="why"><strong>Почему это важно.</strong> Это закрывает другой дефицит: не масштаб demonstrations, а <strong>sim-ready, geometry-aware cross-embodiment packaging</strong>. Такой формат особенно полезен для world models, video/action prediction и cross-embodiment evaluation, потому что содержит одновременно визуальную и кинематическую структуру среды.</div>
+<p class="small"><a href="https://huggingface.co/datasets/D-Robotics/Uranus-Demo-Data">Uranus-Demo-Data</a></p>
+
+<h3>4. EasyWAM collection</h3>
+<p>OpenMOSS обновил серию EasyWAM checkpoints на Wan2.2 и Cosmos-Predict2.5: Unified, Hidden и Mixture-of-Transformers variants, включая joint video-action и IDM-style architectures. Adoption пока маленький — это скорее свежая research matrix, чем popularity leader.</p>
+<div class="why"><strong>Почему это важно.</strong> EasyWAM полезен как controlled architecture lab: можно сравнивать несколько способов связать video DiT и action DiT на близких backbones и training protocol. Для поля это важнее, чем ещё один единичный SOTA checkpoint, потому что помогает понять, <em>какая именно</em> связка world/action modeling работает.</div>
+<p class="small"><a href="https://huggingface.co/collections/OpenMOSS-Team/easywam">EasyWAM collection</a></p>
+
+<h3>5. PhysBrain 1.5-8B — HF update внутри окна</h3>
+<p>PhysBrain 1.5-8B обновлялся в пределах текущего HF-окна и остаётся заметным robotics/any-to-any объектом. Model объединяет embodied understanding, discrete action tokens и future-state prediction в одном autoregressive Qwen3-VL-derived backbone; доступен обычный Transformers interface и demo Space.</p>
+<div class="why"><strong>Почему это важно.</strong> В отличие от specialist VLA/WAM, PhysBrain проверяет идею общего token space для reasoning, action и future state. Даже если closed-loop robot evidence пока слабее его understanding benchmarks, это удобный open baseline для исследований «один physical foundation model vs modular stack».</div>
+<p class="small"><a href="https://huggingface.co/DeepCybo/PhysBrain1.5-8B">PhysBrain 1.5-8B</a></p>
+
+<h3>6. Light-O1-Preview — продолжающийся HF signal</h3>
+<p>Underlying research вышел чуть раньше строгого paper-окна, но checkpoint обновлялся в последние 5 дней и продолжает набирать usage: около 375 monthly downloads / 19 likes на момент проверки. Это text→reasoning→whole-body action-token preview, а не полноценная visual humanoid policy.</p>
+<div class="why"><strong>Почему это важно.</strong> Его value — в shared whole-body action vocabulary и human-action pretraining thesis. Это полезный экспериментальный объект для вопроса, можно ли построить transferable motion prior, который затем retarget'ится на разные humanoid embodiments.</div>
+<p class="small"><a href="https://huggingface.co/LightOriginsHQ/Light-O1-Preview">Light-O1-Preview</a></p>
+</section>
+
+<section>
+<h2>GR00T / Gemini Robotics watch</h2>
+<p><strong>NVIDIA:</strong> за текущие 5 дней нового публичного GR00T N2 checkpoint не обнаружено. Официальный roadmap всё ещё описывает N2 как WAM-based successor, запланированный до конца 2026 года; N1.7 остаётся текущим открытым production-oriented release.</p>
+<p><strong>Google DeepMind:</strong> официальный model-card index не показывает нового robotics model update после Gemini Robotics 2 / ER 2 / On-Device 2 от 30 июля 2026. Поэтому в этот выпуск старые Gemini results не перетаскиваю.</p>
+<div class="why"><strong>Почему это важно.</strong> Отсутствие нового релиза тоже полезно как ориентир: текущая динамика WAM в этом окне идёт прежде всего из open research/HF ecosystem, а не из нового GR00T/Gemini checkpoint.</div>
+<p class="small"><a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-and-Global-Robotics-Leaders-Take-Physical-AI-to-the-Real-World/">NVIDIA N2 roadmap</a> · <a href="https://deepmind.google/models/model-cards/">DeepMind model cards</a></p>
+</section>
+
+<section>
+<h2>5 главных выводов периода</h2>
+<ol>
+<li><strong>Agentic robotics взрослеет:</strong> coding agents полезнее всего выглядят либо как authors of reusable planners, либо как generators of training data — не обязательно как медленный runtime-controller.</li>
+<li><strong>WAM перестаёт означать «обязательно генерируй будущее видео»:</strong> FLUX делает классический WAM практичным, но NowWAM показывает, что часть выигрыша можно получить без future target.</li>
+<li><strong>Multi-rate architecture становится общим паттерном:</strong> expensive predictive/semantic layer и fast reactive action layer естественно работают на разных частотах.</li>
+<li><strong>Deployment intelligence выходит за пределы policy weights:</strong> memory, harness, hardware-shift adaptation и human constraints становятся самостоятельными first-class components.</li>
+<li><strong>Данные для humanoids становятся содержательнее:</strong> свежие G1 WBT datasets смещают open data от isolated manipulation к household whole-body sequences.</li>
+</ol>
+</section>
+
+<section>
+<h2>Что читать / пробовать полностью</h2>
+<ol>
+<li><strong>FLUX 3 Action</strong> — как самый практичный новый WAM baseline.</li>
+<li><strong>Coding Agents for Generalized TAMP</strong> — лучший свежий evidence для reusable agent-written robot programs.</li>
+<li><strong>EmbodiedSWE</strong> — как мост coding agent → VLA data engine.</li>
+<li><strong>InternW0</strong> и <strong>LiMA</strong> — два варианта slow/fast predictive-action architecture.</li>
+<li><strong>NowWAM</strong> — потому что он меняет саму интерпретацию, зачем generative backbone помогает control.</li>
+<li><strong>Self-Adaptive VLA</strong> и <strong>MemBodied</strong> — если интересует production deployment, а не только benchmark success.</li>
+</ol>
+<p><strong>Из HF я бы первым запускал:</strong> FLUX 3 Action на готовом SO-101/DROID recipe; из datasets — изучил бы свежий Unitree G1 WBT пакет как базу для whole-body post-training.</p>
+</section>
+
+</main>
+<footer>Robot Intelligence Brief · 23–27 сентября 2026 · опубликовано через GitHub Pages</footer>
+</div>
+</body>
+</html>
