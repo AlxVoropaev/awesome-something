@@ -57,10 +57,32 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:28px 0 40px}
   <article class="card">
     <div class="card-top">
       <div class="card-main">
+        <div class="date">27 сентября 2026</div>
+        <h2>Robot Intelligence Brief — 23–27 сентября</h2>
+        <div class="desc">FLUX 3 Action, coding agents для TAMP и VLA-data generation, InternW0, NowWAM, LiMA, deployment adaptation, memory и свежий HF radar.</div>
+        <span class="badge">Последний выпуск</span>
+      </div>
+      <a class="open-link" href="Robot%20Intellegence/robot_intelligence_brief_2026-09-27.html">Открыть отчёт</a>
+    </div>
+    <details>
+      <summary>TL;DR</summary>
+      <div class="tldr-content">
+        
+<p><strong>Главный сдвиг за 23–27 сентября:</strong> robot intelligence всё заметнее распадается на специализированные уровни, а не сходится к одной монолитной policy. <strong>FLUX 3 Action</strong> сделал WAM практически доступным как open-weight foundation policy; две свежие работы с coding agents показали, что Claude Code/Codex-подобные системы полезны не только как runtime-agent, но как <strong>авторы обобщаемых planners и генераторы supervision для VLA</strong>.</p>
+<p>Вторая линия — <strong>multi-rate physical intelligence</strong>. InternW0 и LiMA отделяют медленное prediction/intent от быстрого action refinement, тогда как NowWAM ставит под сомнение саму необходимость future-video target: часть выигрыша WAM может идти от generative denoising prior, а не от явного предсказания будущего.</p>
+<p>Третья линия — deployment intelligence вокруг policy: AdaHVLA адаптирует agent harness по опыту робота, Self-Adaptive VLA использует собственные неудачные rollouts для компенсации hardware shift, MemBodied добавляет фиксированную episodic memory, а BEE превращает human corrections в uncertainty-aware constraints. На Hugging Face главный практический релиз — FLUX 3 Action; из данных особенно интересны свежие Unitree G1 whole-body household datasets и multi-embodiment Uranus-Demo-Data.</p>
+      </div>
+    </details>
+  </article>
+
+
+  <article class="card">
+    <div class="card-top">
+      <div class="card-main">
         <div class="date">25 сентября 2026</div>
         <h2>Robot Intelligence Brief — 21–25 сентября</h2>
         <div class="desc">FLUX 3 Action, EmbodiedSWE, InternW0, NowWAM, LiMA, PredActor, HF radar и сдвиг к multi-rate robot intelligence.</div>
-        <span class="badge">Последний выпуск</span>
+        <span class="badge">Открыть выпуск</span>
       </div>
       <a class="open-link" href="Robot%20Intellegence/robot_intelligence_brief_2026-09-25.html">Открыть отчёт</a>
     </div>
