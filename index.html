@@ -56,11 +56,23 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:28px 0 40px}
 
   <article class="card">
     <div class="card-top">
+      <div class="card-main"><div class="date">23 октября 2026</div><h2>Robot Intelligence Brief — 19–23 октября</h2><div class="desc">AW-0, UniFlowWAM, UniWALM, humanoid contact planning и memory, FastHarness, NVIDIA Isaac Lab 3.0, Hugging Face radar.</div><span class="badge">Последний выпуск</span></div>
+      <a class="open-link" href="Robot%20Intellegence/robot_intelligence_brief_2026-10-23.html">Открыть отчёт</a>
+    </div>
+    <details><summary>TL;DR</summary><div class="tldr-content"><p><strong>Главное за 19–23 октября:</strong> <strong>AW-0 (Agentic World Action Models)</strong> впервые сводит code/skills, будущие video states и низкоуровневые actions в три совместно генерируемых потока. <strong>UniFlowWAM</strong> добавляет 3D scene flow в саму модель как третью полноправную модальность, а <strong>UniWALM</strong> совместно декодирует language/action/video и использует текст как память между шагами. Это разные попытки сделать WAM программируемым, геометрически согласованным и запоминающим состояние, а не просто генератором будущих пикселей.</p>
+<p><strong>Humanoids и контакт:</strong> attention-based contact planner отделяет планы будущих контактов от whole-body tracker; <strong>WholeBodyMem</strong> показывает, что память о событиях до получения цели критична для Unitree G1; <strong>AdaDex</strong> совмещает имитацию короткой человеческой траектории и goal-conditioned RL. Для воспроизводимости выделяются <strong>OpenTac</strong> (открытые tactile skins) и <strong>LocoManiLab</strong> (234 задачи с разделением влияния policy/controller).</p>
+<p><strong>Agentic/coding и практические релизы:</strong> <strong>FastHarness</strong> адаптивно вызывает GPT-6 Astra для контроля замороженной π0.5, уменьшая стоимость review; <strong>ALMA</strong> использует LLM как генератор сложных тренировочных сценариев, не как быстрый flight controller. NVIDIA 21 октября выпустила <strong>Isaac Lab 3.0</strong>, <strong>Isaac OS</strong>, reference humanoid <strong>Agile ONE SN</strong> и HF-экосистему <strong>SimReady Central</strong>; в HF radar также Microduck Arena и SharpaDex. Абсолютные числа успешности из разных статей напрямую не сравниваются.</p></div></details>
+  </article>
+
+
+
+  <article class="card">
+    <div class="card-top">
       <div class="card-main">
         <div class="date">27 сентября 2026</div>
         <h2>Robot Intelligence Brief — 23–27 сентября</h2>
         <div class="desc">FLUX 3 Action, coding agents для TAMP и VLA-data generation, InternW0, NowWAM, LiMA, deployment adaptation, memory и свежий HF radar.</div>
-        <span class="badge">Последний выпуск</span>
+        <span class="badge">Архив</span>
       </div>
       <a class="open-link" href="Robot%20Intellegence/robot_intelligence_brief_2026-09-27.html">Открыть отчёт</a>
     </div>
