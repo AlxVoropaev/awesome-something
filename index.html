@@ -56,7 +56,19 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:28px 0 40px}
 
   <article class="card">
     <div class="card-top">
-      <div class="card-main"><div class="date">23 октября 2026</div><h2>Robot Intelligence Brief — 19–23 октября</h2><div class="desc">AW-0, UniFlowWAM, UniWALM, humanoid contact planning и memory, FastHarness, NVIDIA Isaac Lab 3.0, Hugging Face radar.</div><span class="badge">Последний выпуск</span></div>
+      <div class="card-main"><div class="date">27 октября 2026</div><h2>Robot Intelligence Brief — 23–27 октября</h2><div class="desc">RynnUnify, FLORE, ZAP, GPT-6 Astra EBench, Zero-HLM, world-model ablations, coding agents, VLA-HWBench и Hugging Face radar.</div><span class="badge">Последний выпуск</span></div>
+      <a class="open-link" href="Robot%20Intellegence/robot_intelligence_brief_2026-10-27.html">Открыть отчёт</a>
+    </div>
+    <details><summary>TL;DR</summary><div class="tldr-content"><p><strong>Главное за 23–27 октября:</strong> появились два особенно содержательных ответа на вопрос, как объединять рассуждение и действие. <strong>RynnUnify</strong> связывает embodied reasoning и предсказание видео в общей 16B архитектуре с выборочным imagination; <strong>ZAP</strong> обучает обычную 27B VLM пользоваться роботным API на одних симуляциях и сообщает о переносе на физические задачи без real-robot training data. Независимый <strong>EBench</strong> с GPT-6 Astra показывает границу: frontier-agent силён в коротких и новых задачах, но уступает специализированным policies на длинном горизонте и точных контактах.</p>
+<p><strong>Humanoid intelligence:</strong> <strong>FLORE</strong> учит whole-body policy одновременно регулировать положение и контактные усилия (80% против 26,7% при position-only), а <strong>Zero-HLM</strong> превращает мобильные видеосъёмки в physics-verified данные для fine-tuning GR00T N1.7 на Unitree G1. <strong>CoCarry</strong> формализует синхронный контакт двух гуманоидов; <strong>DEX-PHD</strong> упрощает сбор переносимых демонстраций dexterous hands.</p>
+<p><strong>WAM, agents и HF:</strong> controlled ablation показывает, что auxiliary future-video loss действительно помогает на знакомых задачах, но не гарантирует OOD generalization; <strong>OSWAM</strong> переносит predictive prior в одноступенчатую policy. <strong>SceneAgent, VISTA, RoboDoctor</strong> двигают coding/agentic robotics, а <strong>VLA-HWBench</strong> измеряет цену исполнения на edge hardware. В <strong>HF radar</strong> заметны RynnUnify-WAM, MotionBricks, SenseNova-RoboRSI-27B, Ropedia W0, AgiBotWorld2026 и SharpaDex. Проценты разных работ напрямую не сопоставимы.</p></div></details>
+  </article>
+
+
+
+  <article class="card">
+    <div class="card-top">
+      <div class="card-main"><div class="date">23 октября 2026</div><h2>Robot Intelligence Brief — 19–23 октября</h2><div class="desc">AW-0, UniFlowWAM, UniWALM, humanoid contact planning и memory, FastHarness, NVIDIA Isaac Lab 3.0, Hugging Face radar.</div><span class="badge">Архив</span></div>
       <a class="open-link" href="Robot%20Intellegence/robot_intelligence_brief_2026-10-23.html">Открыть отчёт</a>
     </div>
     <details><summary>TL;DR</summary><div class="tldr-content"><p><strong>Главное за 19–23 октября:</strong> <strong>AW-0 (Agentic World Action Models)</strong> впервые сводит code/skills, будущие video states и низкоуровневые actions в три совместно генерируемых потока. <strong>UniFlowWAM</strong> добавляет 3D scene flow в саму модель как третью полноправную модальность, а <strong>UniWALM</strong> совместно декодирует language/action/video и использует текст как память между шагами. Это разные попытки сделать WAM программируемым, геометрически согласованным и запоминающим состояние, а не просто генератором будущих пикселей.</p>
