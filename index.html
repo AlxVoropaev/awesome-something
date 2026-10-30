@@ -48,15 +48,16 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:28px 0 40px}
 <header>
   <h1>Robot Intelligence Briefs</h1>
   <div class="sub">Технические обзоры новых исследований и релизов по humanoid robotics, VLA/WAM, world models, agentic robotics, dexterous manipulation и embodied foundation models.</div>
-  <div class="meta">Обновление: вторник и пятница · окно каждого обзора: последние 5 дней</div>
+  <div class="meta">Обновление: понедельник, среда и пятница в 19:00 МСК · окно каждого обзора: последние 3 дня</div>
 </header>
 
 <main>
-<section class="report-list">
+<section class="report-list"><article class="card"><div class="card-top"><div class="card-main"><div class="date">30 октября 2026</div><h2>Robot Intelligence Brief — 28–30 октября</h2><div class="desc">RoboAtom, TouchBridge, LOGIV, Gym-Anything, Humanoid Dodgeball, Metatron и HF radar.</div><span class="badge">Последний выпуск</span></div><a class="open-link" href="Robot%20Intellegence/robot_intelligence_brief_2026-10-30.html">Открыть отчёт</a></div><details><summary>TL;DR</summary><div class="tldr-content"><ul><li><b>Данные становятся структурированнее.</b> RoboAtom добавляет атомарные навыки; Argus — QC, outcomes и временные события поверх существующих траекторий.</li><li><b>Human-to-robot перенос упирается в контакт.</b> TouchBridge даёт измеримый результат на четырёх реальных задачах; OM-1 предлагает связный data/control stack, но публичный уровень доказательств слабее.</li><li><b>Harness остаётся частью интеллекта.</b> LOGIV явно проверяет зависимости плана; Gym-Anything поручает coding agents создание и аудит самих сред обучения.</li><li><b>Сложность модели нужно оправдывать.</b> MINERVA выявляет shortcuts LIBERO; Gaussian Readout и AcrossDEX показывают, что более сложный decoder не всегда лучше.</li><li><b>Whole-body реактивность требует отдельной проверки.</b> Humanoid Dodgeball исследует уклонение; Metatron показывает программируемый интерфейс целей над замороженной политикой. Это разные уровни стека и разные типы доказательств.</li></ul></div></details></article>
+
 
   <article class="card">
     <div class="card-top">
-      <div class="card-main"><div class="date">27 октября 2026</div><h2>Robot Intelligence Brief — 23–27 октября</h2><div class="desc">RynnUnify, FLORE, ZAP, GPT-6 Astra EBench, Zero-HLM, world-model ablations, coding agents, VLA-HWBench и Hugging Face radar.</div><span class="badge">Последний выпуск</span></div>
+      <div class="card-main"><div class="date">27 октября 2026</div><h2>Robot Intelligence Brief — 23–27 октября</h2><div class="desc">RynnUnify, FLORE, ZAP, GPT-6 Astra EBench, Zero-HLM, world-model ablations, coding agents, VLA-HWBench и Hugging Face radar.</div></div>
       <a class="open-link" href="Robot%20Intellegence/robot_intelligence_brief_2026-10-27.html">Открыть отчёт</a>
     </div>
     <details><summary>TL;DR</summary><div class="tldr-content"><p><strong>Главное за 23–27 октября:</strong> появились два особенно содержательных ответа на вопрос, как объединять рассуждение и действие. <strong>RynnUnify</strong> связывает embodied reasoning и предсказание видео в общей 16B архитектуре с выборочным imagination; <strong>ZAP</strong> обучает обычную 27B VLM пользоваться роботным API на одних симуляциях и сообщает о переносе на физические задачи без real-robot training data. Независимый <strong>EBench</strong> с GPT-6 Astra показывает границу: frontier-agent силён в коротких и новых задачах, но уступает специализированным policies на длинном горизонте и точных контактах.</p>
